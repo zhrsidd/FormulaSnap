@@ -116,7 +116,7 @@ You'll need:
 Clone the repository:
 
 ```bash
-git clone YOUR_REPOSITORY_URL
+git clone https://github.com/zhrsidd/FormulaSnap.git
 cd FormulaSnap
 ```
 
@@ -194,4 +194,4 @@ Formula data should always be checked against the official specification and for
 
 ## 📄 License
 
-License information will be added before public distribution.
+FormulaSnap is open source and available under the [MIT License](LICENSE).
