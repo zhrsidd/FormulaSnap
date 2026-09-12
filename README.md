@@ -1,5 +1,46 @@
 # FormulaSnap
 
+## Live browser demo
+
+Try [FormulaSnap in your browser](https://zhrsidd.github.io/FormulaSnap/).
+
+The browser demo uses the same formula library, fuzzy search, KaTeX rendering,
+subject/topic filters, scrollable results, keyboard navigation, expanded details,
+Favorites and Recents. Preferences and history stay in localStorage in that
+browser (separate from the desktop app). Clipboard copying works over HTTPS or
+localhost; the browser may ask for clipboard permission.
+
+Native window controls, Always on Top and the global shortcut are desktop-only
+and hidden or disabled in the browser. Enter copies without hiding the page;
+Escape still dismisses Settings. The native Tauri build retains its behavior.
+
+### Develop and preview
+
+```sh
+npm ci
+npm run dev          # Browser development at http://localhost:1420
+npm run build:web    # GitHub Pages assets in dist-web/
+npm run preview:web  # Open the displayed URL with /FormulaSnap/ appended
+```
+
+Desktop commands remain `npm run tauri dev` and `npm run tauri build`.
+The default build still writes to `dist/` with base `/`; the web build uses
+`/FormulaSnap/` and a separate directory so it cannot overwrite native assets.
+
+### Enable GitHub Pages once
+
+1. Commit and push these changes to `main` in `zhrsidd/FormulaSnap`.
+2. In the repository's **Settings → Pages → Build and deployment**, choose
+   **GitHub Actions** as the Source. Enable Actions if they are disabled.
+3. In **Actions → Deploy FormulaSnap to GitHub Pages**, choose **Run workflow**
+   on `main` if the first push ran before Pages was enabled.
+4. Wait for both build and deploy to succeed, then open the live demo above.
+   If the `github-pages` environment requires approval, approve the deployment.
+
+Subsequent pushes to `main` deploy automatically. No personal access token,
+custom domain, or `gh-pages` branch is needed.
+
+
 A fast, lightweight macOS formula search utility for students.
 
 FormulaSnap lets you instantly search Maths and Physics formulas from anywhere on your Mac using a global keyboard shortcut. Search by formula name, topic, variable, unit, or related terms, then copy the formula without interrupting your workflow.

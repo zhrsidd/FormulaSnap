@@ -11,7 +11,7 @@ import {
 import { BlockMath } from "react-katex";
 import { listen } from "@tauri-apps/api/event";
 import { getCurrentWindow } from "@tauri-apps/api/window";
-import { invoke } from "@tauri-apps/api/core";
+import { invoke, isTauri } from "@tauri-apps/api/core";
 
 import "katex/dist/katex.min.css";
 import "./App.css";
@@ -22,6 +22,9 @@ type SubjectFilter =
   | "All"
   | "Physics"
   | "Maths";
+
+// The same frontend runs in Tauri and in a regular browser.
+const isDesktop = isTauri();
 
 const FAVORITES_KEY = "formulasnap-favorites";
 const RECENTS_KEY = "formulasnap-recents";
@@ -109,12 +112,14 @@ function App() {
   const [navigationRequest, setNavigationRequest] = useState(0);
 
   const appWindow = useMemo(
-    () => getCurrentWindow(),
+    () => isDesktop ? getCurrentWindow() : null,
     []
   );
 
   // Reset FormulaSnap whenever opened using global shortcut
   useEffect(() => {
+    if (!isDesktop) return;
+    let disposed = false;
     let unlisten: (() => void) | undefined;
 
     listen("formulasnap-opened", () => {
@@ -129,16 +134,19 @@ function App() {
         searchRef.current?.focus();
       }, 50);
     }).then((fn) => {
-      unlisten = fn;
-    });
+      if (disposed) fn();
+      else unlisten = fn;
+    }).catch((error) => console.error("Could not listen for app opening:", error));
 
     return () => {
+      disposed = true;
       unlisten?.();
     };
   }, []);
 
   // Apply and save Always on Top
   useEffect(() => {
+    if (!isDesktop) return;
     const updateAlwaysOnTop = async () => {
       try {
         await invoke("set_always_on_top", {
@@ -309,7 +317,7 @@ function App() {
     }
     setCopyError("");
     setRecentIds((current) => [item.id, ...current.filter((id) => id !== item.id)].slice(0, RECENTS_LIMIT));
-    if (hide) await appWindow.hide();
+    if (hide) await appWindow?.hide();
   }, [appWindow]);
 
   useEffect(() => {
@@ -372,7 +380,7 @@ function App() {
           return;
         }
 
-        appWindow.hide();
+        appWindow?.hide();
         return;
       }
 
@@ -470,10 +478,10 @@ function App() {
   ]);
 
   return (
-    <main className="app">
+    <main className={isDesktop ? "app" : "app browser-app"}>
       <div className="panel">
         {/* Custom titlebar */}
-        <div
+        {isDesktop && <div
           className="titlebar"
           data-tauri-drag-region
         >
@@ -481,7 +489,7 @@ function App() {
             <button
               className="traffic close"
               onClick={() =>
-                appWindow.close()
+                appWindow?.close()
               }
               aria-label="Close"
             />
@@ -489,7 +497,7 @@ function App() {
             <button
               className="traffic minimize"
               onClick={() =>
-                appWindow.minimize()
+                appWindow?.minimize()
               }
               aria-label="Minimize"
             />
@@ -497,7 +505,7 @@ function App() {
             <button
               className="traffic maximize"
               onClick={() =>
-                appWindow.toggleMaximize()
+                appWindow?.toggleMaximize()
               }
               aria-label="Maximize"
             />
@@ -507,7 +515,7 @@ function App() {
             className="drag-space"
             data-tauri-drag-region
           />
-        </div>
+        </div>}
 
         {/* Header */}
         <div className="heading-row">
@@ -695,9 +703,9 @@ function App() {
               <span>
                 Enter Copy
               </span>
-              <span>
+              {isDesktop && <span>
                 Esc Close
-              </span>
+              </span>}
             </div>
           </>
         ) : (
@@ -812,6 +820,7 @@ function App() {
             )}
 
             {/* Window */}
+            {isDesktop && <>
             <div className="settings-section-label">
               Window
             </div>
@@ -846,6 +855,8 @@ function App() {
                 <span className="slider" />
               </label>
             </div>
+
+            </>}
 
             <div className="settings-footer">
               Settings are saved

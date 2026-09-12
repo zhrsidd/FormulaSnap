@@ -657,3 +657,14 @@ background 0.15s ease,
   color: #ffb4ae;
   font-size: 12px;
 }
+
+/* Browser layout leaves the native 650 × 520 window unchanged. */
+.browser-app {
+  max-width: 650px;
+  height: min(700px, 100dvh);
+  margin: 0 auto;
+}
+
+.browser-app .footer {
+  flex-wrap: wrap;
+}
