@@ -4,6 +4,8 @@ A fast, lightweight macOS formula search utility for students.
 
 FormulaSnap lets you instantly search Maths and Physics formulas from anywhere on your Mac using a global keyboard shortcut. Search by formula name, topic, variable, unit, or related terms, then copy the formula without interrupting your workflow.
 
+![FormulaSnap home screen](assets/screenshots/home.png)
+
 ## ✨ Features
 
 - ⚡ Open FormulaSnap from anywhere with `⌘ ⇧ Y`
@@ -20,6 +22,8 @@ FormulaSnap lets you instantly search Maths and Physics formulas from anywhere o
 - 💾 Favorites, recents, filters, and settings are stored locally
 - 🚫 No internet connection or AI required at runtime
 
+![FormulaSnap settings](assets/screenshots/settings.png)
+
 ## 🚀 How It Works
 
 Press:
@@ -29,6 +33,8 @@ Press:
 from anywhere on macOS to bring up FormulaSnap.
 
 Start typing to search the formula library. FormulaSnap searches across formula names, aliases, topics, variables, units, and other metadata.
+
+![FormulaSnap formula details](assets/screenshots/formula_details.png)
 
 ### Keyboard Controls
 
@@ -56,6 +62,8 @@ standard deviation
 ```
 
 can be used to quickly find relevant formulas.
+
+![FormulaSnap fuzzy search](assets/screenshots/fuzzy_search.png)
 
 ## 📚 Formula Library
 
