@@ -59,7 +59,7 @@ FormulaSnap lets you instantly search Maths and Physics formulas from anywhere o
 - 🕘 Quickly access recently copied formulas
 - 📖 Expand formulas to view variables, units, and additional notes
 - 🎯 Filter formulas by subject and topic
-- 🪟 Optional Always on Top mode
+- 🪟 Resizable desktop window and optional Always on Top mode
 - 💾 Favorites, recents, filters, and settings are stored locally
 - 🔄 Signed automatic desktop updates from GitHub Releases
 - 🚫 Offline formula search with no AI required

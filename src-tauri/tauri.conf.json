@@ -15,12 +15,14 @@
         "title": "FormulaSnap",
         "width": 650,
         "height": 520,
-        "resizable": false,
+        "resizable": true,
         "center": true,
         "alwaysOnTop": false,
         "skipTaskbar": true,
         "transparent": true,
-        "decorations": false
+        "decorations": false,
+        "minWidth": 360,
+        "minHeight": 360
       }
     ],
     "security": {
