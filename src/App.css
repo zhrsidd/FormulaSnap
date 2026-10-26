@@ -709,3 +709,10 @@ background 0.15s ease,
   .setting-row { gap: 8px; }
   .setting-select-topic { max-width: 58%; }
 }
+
+.shortcut-row { align-items: flex-start; flex-wrap: wrap; }
+.shortcut-controls { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+.shortcut-setting kbd { font: inherit; color: #e3eaff; white-space: nowrap; }
+.shortcut-help { margin: 8px 4px 0; font-size: 12px; line-height: 1.5; color: #b9c2d0; }
+.shortcut-controls button:disabled { opacity: 0.5; cursor: default; }
+.shortcut-controls button:focus-visible { outline: 2px solid #98b6ff; outline-offset: 2px; }

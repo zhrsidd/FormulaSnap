@@ -49,7 +49,7 @@ FormulaSnap lets you instantly search Maths and Physics formulas from anywhere o
 
 ## ✨ Features
 
-- ⚡ Open FormulaSnap from anywhere with `⌘ ⇧ Y`
+- ⚡ Open FormulaSnap from anywhere with `⌘ ⇧ Y` (customisable in Settings)
 - 🔎 Fast fuzzy formula search
 - 📐 Maths and Physics formula library
 - 🧮 Proper mathematical notation using KaTeX
@@ -72,7 +72,13 @@ Press:
 
 `⌘ ⇧ Y`
 
-from anywhere on macOS to bring up FormulaSnap.
+from anywhere on macOS to bring up FormulaSnap. This is the default shortcut.
+
+To change it, open **Settings → Keyboard shortcut → Change shortcut**, press a
+combination containing Command, Control or Option, then choose **Save shortcut**.
+The new shortcut takes effect immediately and is restored when the app restarts.
+**Reset to default** restores `⌘ ⇧ Y`. If a combination cannot be registered,
+the app keeps the previous shortcut and displays an error.
 
 Start typing to search the formula library. FormulaSnap searches across formula names, aliases, topics, variables, units, and other metadata.
 

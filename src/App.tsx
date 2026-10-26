@@ -16,6 +16,7 @@ import { invoke, isTauri } from "@tauri-apps/api/core";
 import "katex/dist/katex.min.css";
 import "./App.css";
 
+import { ShortcutSettings } from "./components/ShortcutSettings";
 import { AppUpdates } from "./components/AppUpdates";
 
 import { formulas } from "./data/formulas";
@@ -127,6 +128,7 @@ function App() {
     let unlisten: (() => void) | undefined;
 
     listen("formulasnap-opened", () => {
+      if (document.activeElement?.matches("[data-shortcut-recorder]")) return;
       scrollSelection.current = true;
       setNavigationRequest((current) => current + 1);
       setShowSettings(false);
@@ -833,6 +835,7 @@ function App() {
 
             {/* Window */}
             {isDesktop && <>
+            <ShortcutSettings />
             <div className="settings-section-label">
               Window
             </div>
