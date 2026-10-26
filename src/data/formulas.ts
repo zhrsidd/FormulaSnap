@@ -3428,6 +3428,213 @@ export const formulas: Formula[] = [
     notes: "Valid for constant acceleration.",
   },
 
+  {
+    id: "maths-m1-constant-speed-distance",
+    name: "Distance at Constant Speed",
+    subject: "Maths",
+    topic: "Mechanics 1",
+    formula: "distance = speed × time",
+    latex: "s=vt",
+    aliases: ["constant speed", "distance speed time", "speed time"],
+    variables: [
+      { symbol: "s", name: "distance", unit: "m" },
+      { symbol: "v", name: "constant speed", unit: "m s⁻¹" },
+      { symbol: "t", name: "time", unit: "s" },
+    ],
+  },
+
+  {
+    id: "maths-m1-velocity-time-graph",
+    name: "Velocity–Time Graph",
+    subject: "Maths",
+    topic: "Mechanics 1",
+    formula: "gradient = acceleration; signed area = displacement",
+    latex: "\\text{gradient}=a,\\qquad \\text{signed area}=s",
+    aliases: ["velocity time graph", "speed time graph", "area under graph", "gradient acceleration"],
+    variables: [
+      { symbol: "a", name: "acceleration", unit: "m s⁻²" },
+      { symbol: "s", name: "displacement", unit: "m" },
+    ],
+    notes: "For a speed–time graph, the area gives distance when speed stays non-negative.",
+  },
+
+  {
+    id: "maths-m1-weight",
+    name: "Weight",
+    subject: "Maths",
+    topic: "Mechanics 1",
+    formula: "W = mg",
+    latex: "W=mg",
+    aliases: ["weight", "force of gravity", "mass times gravity"],
+    variables: [
+      { symbol: "W", name: "weight", unit: "N" },
+      { symbol: "m", name: "mass", unit: "kg" },
+      { symbol: "g", name: "acceleration due to gravity", unit: "m s⁻²" },
+    ],
+    notes: "Near Earth's surface, use g = 9.8 m s⁻² unless a different value is specified.",
+  },
+
+  {
+    id: "maths-m1-newtons-second-law",
+    name: "Newton's Second Law",
+    subject: "Maths",
+    topic: "Mechanics 1",
+    formula: "ΣF = ma",
+    latex: "\\sum F=ma",
+    aliases: ["newton second law", "resultant force", "force mass acceleration"],
+    variables: [
+      { symbol: "ΣF", name: "resultant force", unit: "N" },
+      { symbol: "m", name: "mass", unit: "kg" },
+      { symbol: "a", name: "acceleration", unit: "m s⁻²" },
+    ],
+  },
+
+  {
+    id: "maths-m1-force-component",
+    name: "Force Component",
+    subject: "Maths",
+    topic: "Mechanics 1",
+    formula: "component along a direction = F cos(θ)",
+    latex: "F_{\\parallel}=F\\cos\\theta",
+    aliases: ["resolving forces", "force component", "component of force"],
+    variables: [
+      { symbol: "F", name: "force magnitude", unit: "N" },
+      { symbol: "θ", name: "angle between force and direction", unit: "° or rad" },
+    ],
+    notes: "Use the angle between the force and the direction being resolved along.",
+  },
+
+  {
+    id: "maths-m1-friction",
+    name: "Friction and Limiting Friction",
+    subject: "Maths",
+    topic: "Mechanics 1",
+    formula: "F ≤ μR; at limiting friction F = μR",
+    latex: "F\\leq\\mu R,\\qquad F_{\\text{lim}}=\\mu R",
+    aliases: ["friction", "limiting friction", "coefficient of friction", "rough surface"],
+    variables: [
+      { symbol: "F", name: "friction force", unit: "N" },
+      { symbol: "μ", name: "coefficient of friction" },
+      { symbol: "R", name: "normal reaction", unit: "N" },
+    ],
+  },
+
+  {
+    id: "maths-m1-equilibrium",
+    name: "Particle Equilibrium",
+    subject: "Maths",
+    topic: "Mechanics 1",
+    formula: "ΣF = 0",
+    latex: "\\sum \\mathbf{F}=\\mathbf{0}",
+    aliases: ["statics", "equilibrium", "resultant force zero", "balanced forces"],
+    variables: [{ symbol: "ΣF", name: "vector sum of forces", unit: "N" }],
+    notes: "For a particle in equilibrium, resolve and set the force components in each direction to zero.",
+  },
+
+  {
+    id: "maths-m1-moment",
+    name: "Moment of a Force",
+    subject: "Maths",
+    topic: "Mechanics 1",
+    formula: "moment = F × d",
+    latex: "M=Fd_{\\perp}",
+    aliases: ["moment", "turning effect", "perpendicular distance", "torque"],
+    variables: [
+      { symbol: "M", name: "moment", unit: "N m" },
+      { symbol: "F", name: "force", unit: "N" },
+      { symbol: "d⊥", name: "perpendicular distance from pivot", unit: "m" },
+    ],
+  },
+
+  {
+    id: "maths-m1-moments-equilibrium",
+    name: "Moments in Equilibrium",
+    subject: "Maths",
+    topic: "Mechanics 1",
+    formula: "sum of clockwise moments = sum of anticlockwise moments",
+    latex: "\\sum M_{\\text{clockwise}}=\\sum M_{\\text{anticlockwise}}",
+    aliases: ["principle of moments", "moments equilibrium", "clockwise anticlockwise moments"],
+    variables: [],
+    notes: "For a body in equilibrium, the net moment about any point is zero.",
+  },
+
+  {
+    id: "maths-m1-position-constant-velocity",
+    name: "Position with Constant Velocity",
+    subject: "Maths",
+    topic: "Mechanics 1",
+    formula: "r = r₀ + vt",
+    latex: "\\mathbf{r}=\\mathbf{r}_0+\\mathbf{v}t",
+    aliases: ["position vector", "constant velocity vector", "displacement vector"],
+    variables: [
+      { symbol: "r", name: "position vector", unit: "m" },
+      { symbol: "r₀", name: "initial position vector", unit: "m" },
+      { symbol: "v", name: "constant velocity vector", unit: "m s⁻¹" },
+      { symbol: "t", name: "time", unit: "s" },
+    ],
+  },
+
+  {
+    id: "maths-m1-vector-magnitude",
+    name: "Magnitude of a 2D Vector",
+    subject: "Maths",
+    topic: "Mechanics 1",
+    formula: "|ai + bj| = √(a² + b²)",
+    latex: "|a\\mathbf{i}+b\\mathbf{j}|=\\sqrt{a^2+b^2}",
+    aliases: ["vector magnitude", "modulus of a vector", "i j vector length"],
+    variables: [
+      { symbol: "a, b", name: "components of the vector" },
+      { symbol: "i, j", name: "unit vectors along perpendicular axes" },
+    ],
+  },
+
+  {
+    id: "maths-m1-impulse-force-time",
+    name: "Impulse from a Constant Force",
+    subject: "Maths",
+    topic: "Mechanics 1",
+    formula: "I = Ft",
+    latex: "I=Ft",
+    aliases: ["impulse force time", "constant force impulse"],
+    variables: [
+      { symbol: "I", name: "impulse", unit: "N s" },
+      { symbol: "F", name: "constant force", unit: "N" },
+      { symbol: "t", name: "time for which force acts", unit: "s" },
+    ],
+    notes: "Impulse is also the change in momentum.",
+  },
+
+  {
+    id: "maths-m1-conservation-momentum",
+    name: "Conservation of Momentum",
+    subject: "Maths",
+    topic: "Mechanics 1",
+    formula: "total momentum before = total momentum after",
+    latex: "m_1u_1+m_2u_2=m_1v_1+m_2v_2",
+    aliases: ["conservation momentum", "momentum before and after", "collision"],
+    variables: [
+      { symbol: "m₁, m₂", name: "particle masses", unit: "kg" },
+      { symbol: "u₁, u₂", name: "velocities before interaction", unit: "m s⁻¹" },
+      { symbol: "v₁, v₂", name: "velocities after interaction", unit: "m s⁻¹" },
+    ],
+    notes: "Use signed velocities along a chosen straight line. Applies when external resultant impulse is zero.",
+  },
+
+  {
+    id: "maths-m1-incline-friction-angle",
+    name: "Friction on an Inclined Plane",
+    subject: "Maths",
+    topic: "Mechanics 1",
+    formula: "tan(θ) ≤ μ for equilibrium",
+    latex: "\\tan\\theta\\leq\\mu",
+    aliases: ["angle of friction", "inclined plane friction", "particle on rough plane"],
+    variables: [
+      { symbol: "θ", name: "angle of plane to horizontal", unit: "° or rad" },
+      { symbol: "μ", name: "coefficient of friction" },
+    ],
+    notes: "For a particle at rest on a rough plane; equality is limiting equilibrium.",
+  },
+
   // =========================================================
   // MATHS — MECHANICS 2
   // =========================================================
