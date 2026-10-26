@@ -1,3 +1,5 @@
+import { pearsonFormulas } from "./pearsonFormulas";
+
 export type FormulaVariable = {
   symbol: string;
   name: string;
@@ -7,7 +9,7 @@ export type FormulaVariable = {
 export type Formula = {
   id: string;
   name: string;
-  subject: "Physics" | "Maths";
+  subject: "Physics" | "Maths" | "Further Mathematics";
   topic: string;
   formula: string;
   latex: string;
@@ -3732,4 +3734,5 @@ export const formulas: Formula[] = [
       { symbol: "x", name: "value of random variable" },
     ],
   },
+  ...pearsonFormulas,
 ];

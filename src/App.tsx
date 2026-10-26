@@ -8,7 +8,7 @@ import {
   useState,
 } from "react";
 
-import { BlockMath } from "react-katex";
+import { FormulaEquation } from "./components/FormulaEquation";
 import { listen } from "@tauri-apps/api/event";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { invoke, isTauri } from "@tauri-apps/api/core";
@@ -23,7 +23,8 @@ import { formulas } from "./data/formulas";
 type SubjectFilter =
   | "All"
   | "Physics"
-  | "Maths";
+  | "Maths"
+  | "Further Mathematics";
 
 // The same frontend runs in Tauri and in a regular browser.
 const isDesktop = isTauri();
@@ -94,7 +95,8 @@ function App() {
 
       if (
         saved === "Physics" ||
-        saved === "Maths"
+        saved === "Maths" ||
+        saved === "Further Mathematics"
       ) {
         return saved;
       }
@@ -200,6 +202,7 @@ function App() {
               formula.subject === selectedSubject
           )
           .map((formula) => formula.topic)
+          .concat(selectedSubject === "Further Mathematics" ? ["Decision 1"] : [])
       )
     );
   }, [selectedSubject]);
@@ -610,14 +613,6 @@ function App() {
                       <h2>
                         {item.name}
                       </h2>
-
-                      <div className="equation">
-                        <BlockMath
-                          math={
-                            item.latex
-                          }
-                        />
-                      </div>
                     </div>
 
                     <div className="formula-actions">
@@ -657,6 +652,7 @@ function App() {
                         Copy
                       </button>
                     </div>
+                    <FormulaEquation math={item.latex} />
                     </div>
                     <div id={`details-${item.id}`} hidden={expandedId !== item.id} className="formula-details">
                       {!!item.variables?.length && (
@@ -693,7 +689,9 @@ function App() {
               {visibleResults.length ===
                 0 && (
                 <p className="empty">
-                  {isSearching
+                  {selectedSubject === "Further Mathematics" && selectedTopic === "Decision 1"
+                    ? "Pearson’s formula booklet lists no required formulae for Decision Mathematics D1."
+                    : isSearching
                     ? "No formulas found."
                     : favoriteIds.length || recentIds.length
                       ? "No favorites or recents match these filters. Search for a formula or change your filters."
@@ -780,6 +778,10 @@ function App() {
 
                 <option value="Maths">
                   Maths
+                </option>
+
+                <option value="Further Mathematics">
+                  Further Mathematics
                 </option>
 
               </select>

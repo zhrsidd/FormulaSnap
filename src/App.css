@@ -689,3 +689,21 @@ background 0.15s ease,
 .browser-app .footer {
   flex-wrap: wrap;
 }
+
+/* Keep equations below the heading/actions so they can use the full card width. */
+.formula-summary {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px 12px;
+}
+.formula-summary > .equation { grid-column: 1 / -1; min-width: 0; }
+.equation-content { width: max-content; }
+.formula-card h2, .metadata { overflow-wrap: anywhere; }
+.setting-select-wide { max-width: 58%; min-width: 0; }
+.variable-list, .variable-row dd { min-width: 0; overflow-wrap: anywhere; }
+@media (max-width: 440px) {
+  .formula-summary { grid-template-columns: minmax(0, 1fr); }
+  .formula-actions { grid-row: 3; justify-self: end; }
+  .setting-row { gap: 8px; }
+  .setting-select-topic { max-width: 58%; }
+}

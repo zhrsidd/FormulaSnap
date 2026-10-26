@@ -125,10 +125,19 @@ FormulaSnap contains formulas covering Edexcel International A Level Mathematics
 - Pure Mathematics 1
 - Pure Mathematics 2
 - Pure Mathematics 3
+- Pure Mathematics 4
 - Mechanics 1
 - Mechanics 2
 - Statistics 1
 - Statistics 2
+- Statistics 3
+
+### Further Mathematics
+
+- FPM1, FPM2 and FPM3 (Pearson FP1–FP3)
+- Decision 1: the Pearson booklet supplies no required formulae; the topic explains this
+
+The library includes 146 additional equation cards from the [Pearson formula booklet](https://qualifications.pearson.com/content/dam/pdf/International%20Advanced%20Level/Mathematics/2018/Specification-and-Sample-Assessment/IAL-Mathematics-Formula-Book.pdf), with printed page references in Notes. See [coverage and exclusions](docs/pearson-formula-coverage.md). Numerical lookup tables and M3 are excluded from this expansion.
 
 Formula entries can include:
 

@@ -2,8 +2,23 @@ import { describe, expect, it } from "vitest";
 import katex from "katex";
 import Fuse from "fuse.js";
 import { formulas } from "./formulas";
+import { pearsonFormulas } from "./pearsonFormulas";
 
 describe("formula library", () => {
+  it("routes the booklet's further-pure modules separately and excludes data tables", () => {
+    expect(pearsonFormulas.length).toBe(146);
+    for (const formula of pearsonFormulas) {
+      expect(formula.subject).toBe(formula.topic.startsWith("FPM") ? "Further Mathematics" : "Maths");
+      expect(formula.variables.length).toBeGreaterThan(0);
+      expect(formula.notes).toMatch(/Pearson IAL Mathematics Formula Book, p\. \d+\./);
+      expect(formula.topic).not.toBe("Mechanics 3");
+      expect(formula.name).not.toMatch(/critical values|random numbers|distribution table/i);
+    }
+    expect(pearsonFormulas.some(f => f.topic === "Pure 4")).toBe(true);
+    expect(pearsonFormulas.some(f => f.topic === "Statistics 3")).toBe(true);
+    expect(pearsonFormulas.find(f => f.id === "pearson-fp3-integral-sqrt-x2-minus-a2")?.notes).toContain("x > a");
+    expect(pearsonFormulas.find(f => f.id === "pearson-s3-spearman")?.notes).toContain("no tied ranks");
+  });
   it("keeps saved formula IDs unique and renders every equation", () => {
     expect(new Set(formulas.map((f) => f.id)).size).toBe(formulas.length);
     for (const formula of formulas) {
