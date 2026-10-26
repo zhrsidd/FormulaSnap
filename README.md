@@ -4,7 +4,9 @@
 
 Try [FormulaSnap in your browser](https://zhrsidd.github.io/FormulaSnap/).
 
-The browser demo uses the same formula library, fuzzy search, KaTeX rendering,
+The browser site fills the page with FormulaSnap branding, screenshots, a Mac
+download section, and a responsive formula library with visible subject/topic
+filters and progressively loaded cards. It uses the same fuzzy search, KaTeX rendering,
 subject/topic filters, scrollable results, keyboard navigation, expanded details,
 Favorites and Recents. Preferences and history stay in localStorage in that
 browser (separate from the desktop app). Clipboard copying works over HTTPS or

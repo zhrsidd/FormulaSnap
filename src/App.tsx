@@ -57,6 +57,7 @@ function saveIds(key: string, ids: string[]) {
 
 function App() {
   const [showSettings, setShowSettings] = useState(false);
+  const [browserLimit, setBrowserLimit] = useState(24);
   const [query, setQuery] = useState("");
   const [selectedIndex, setSelectedIndex] = useState(0);
 
@@ -113,7 +114,7 @@ function App() {
 
   const searchRef = useRef<HTMLInputElement>(null);
   const resultsRef = useRef<HTMLDivElement>(null);
-  const scrollSelection = useRef(true);
+  const scrollSelection = useRef(isDesktop);
   const [navigationRequest, setNavigationRequest] = useState(0);
 
   const appWindow = useMemo(
@@ -311,10 +312,11 @@ function App() {
       { label: "Favorites", items: resolve(favoriteIds) },
       // Favorites already appear above; retain them in stored history.
       { label: "Recents", items: resolve(recentIds.filter((id) => !favoriteSet.has(id))) },
-      { label: selectedTopic, items: selectedTopic === "All" ? [] : filteredFormulas.filter((item) => !savedIds.has(item.id)) },
+      { label: selectedTopic === "All" ? "All formulae" : selectedTopic, items: isDesktop && selectedTopic === "All" ? [] : filteredFormulas.filter((item) => !savedIds.has(item.id)) },
     ].filter((section) => section.items.length > 0);
   }, [isSearching, query, fuse, filteredFormulas, favoriteIds, recentIds, favoriteSet, selectedTopic]);
-  const visibleResults = useMemo(() => sections.flatMap((section) => section.items), [sections]);
+  const matchingResults = useMemo(() => sections.flatMap((section) => section.items), [sections]);
+  const visibleResults = useMemo(() => isDesktop ? matchingResults : matchingResults.slice(0, browserLimit), [matchingResults, browserLimit]);
 
   const copyFormula = useCallback(async (item: (typeof formulas)[number], hide = false) => {
     try {
@@ -337,8 +339,9 @@ function App() {
 
   // Reset selected result when search/filter changes
   useEffect(() => {
-    scrollSelection.current = true;
+    scrollSelection.current = isDesktop;
     setSelectedIndex(0);
+    setBrowserLimit(24);
     setExpandedId(null);
   }, [
     query,
@@ -376,6 +379,7 @@ function App() {
     function handleKeyDown(
       event: KeyboardEvent
     ) {
+      if (!isDesktop && event.target instanceof HTMLElement && !event.target.closest(".browser-app")) return;
       if (event.key === "Escape") {
         event.preventDefault();
 
@@ -403,6 +407,7 @@ function App() {
         !event.altKey && !event.ctrlKey && !event.metaKey
       ) {
         const target = event.target;
+        if (!isDesktop && target instanceof HTMLInputElement) return;
         // Preserve native Space activation for buttons and settings controls.
         if (target instanceof HTMLElement &&
             target.closest("button, select, textarea, [contenteditable='true']")) {
@@ -529,11 +534,10 @@ function App() {
         {/* Header */}
         <div className="heading-row">
           <div>
-            <h1>FormulaSnap</h1>
+            {isDesktop ? <h1>FormulaSnap</h1> : <h2 id="library-heading">Formula library</h2>}
 
             <p className="subtitle">
-              Find the formula you need,
-              instantly.
+              {isDesktop ? "Find the formula you need, instantly." : "Search, explore, and make the useful ones yours."}
             </p>
           </div>
 
@@ -566,8 +570,19 @@ function App() {
                   event.target.value
                 )
               }
-              autoFocus
+              autoFocus={isDesktop}
             />
+
+            {!isDesktop && <div className="browser-filters">
+              <label>Subject<select value={selectedSubject} onChange={event => { setSelectedSubject(event.target.value as SubjectFilter); setSelectedTopic("All"); }}>
+                {["All", "Physics", "Maths", "Further Mathematics"].map(subject => <option key={subject} value={subject}>{subject === "All" ? "All subjects" : subject}</option>)}
+              </select></label>
+              <label>Topic<select value={selectedTopic} disabled={selectedSubject === "All"} onChange={event => setSelectedTopic(event.target.value)}>
+                <option value="All">All topics</option>
+                {availableTopics.map(topic => <option key={topic} value={topic}>{topic}</option>)}
+              </select></label>
+              <span className="browser-result-count" role="status">{matchingResults.length} formulae{isSearching ? " found" : " to explore"}</span>
+            </div>}
 
             {/* Results */}
             <div ref={resultsRef} className="results">
@@ -702,6 +717,7 @@ function App() {
               )}
             </div>
 
+            {!isDesktop && matchingResults.length > visibleResults.length && <button className="browser-show-more" onClick={() => { scrollSelection.current = false; setBrowserLimit(limit => limit + 24); }}>Show more formulae ({matchingResults.length - visibleResults.length} remaining)</button>}
             {copyError && <p className="copy-error" role="alert">{copyError}</p>}
             <div className="footer">
               <span>

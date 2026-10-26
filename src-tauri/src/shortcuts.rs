@@ -131,7 +131,7 @@ pub fn initialize(app: &AppHandle) -> Result<ShortcutPreferences, String> {
 }
 
 #[tauri::command]
-pub fn get_shortcut(
+pub async fn get_shortcut(
     preferences: State<'_, Mutex<ShortcutPreferences>>,
 ) -> Result<ShortcutSettings, String> {
     Ok(preferences
@@ -142,7 +142,7 @@ pub fn get_shortcut(
 }
 
 #[tauri::command]
-pub fn set_shortcut(
+pub async fn set_shortcut(
     app: AppHandle,
     preferences: State<'_, Mutex<ShortcutPreferences>>,
     shortcut: String,

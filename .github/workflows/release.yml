@@ -29,6 +29,8 @@ jobs:
           workspaces: src-tauri -> target
       - run: npm ci
       - run: npm test
+      - name: Test native shortcut handling
+        run: cargo test --manifest-path src-tauri/Cargo.toml --locked --lib
       - name: Assign a version for this push
         run: node scripts/release-version.mjs
       - name: Build signed universal macOS release

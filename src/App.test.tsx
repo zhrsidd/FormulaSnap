@@ -43,3 +43,16 @@ it("migrates saved Further Pure topic names and explains the source's empty Deci
   fireEvent.click(screen.getByRole("button", { name: "Done" }));
   expect(screen.getByText(/lists no required formulae/)).toBeTruthy();
 });
+
+it("browses the web library in pages without stealing initial focus", () => {
+  render(<App />);
+  expect(screen.getAllByRole("group")).toHaveLength(24);
+  expect(document.activeElement).not.toBe(screen.getByRole("textbox"));
+  expect(HTMLElement.prototype.scrollIntoView).not.toHaveBeenCalled();
+  fireEvent.click(screen.getByRole("button", { name: /Show more formulae/ }));
+  expect(screen.getAllByRole("group")).toHaveLength(48);
+  expect(fireEvent.keyDown(screen.getByRole("textbox"), { key: " ", code: "Space" })).toBe(true);
+  fireEvent.change(screen.getByRole("combobox", { name: "Subject" }), { target: { value: "Further Mathematics" } });
+  expect(screen.getAllByRole("group")).toHaveLength(24);
+  expect(screen.getByRole("combobox", { name: "Topic" })).toBeTruthy();
+});
