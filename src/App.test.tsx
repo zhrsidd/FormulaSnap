@@ -30,7 +30,7 @@ it("browses General without a query and retains search and favorites", () => {
   expect(screen.queryByRole("button", { name: "Check for updates" })).toBeNull();
 });
 
-it("persists Further Mathematics and explains the source's empty Decision 1 topic", () => {
+it("migrates saved Further Pure topic names and explains the source's empty Decision 1 topic", () => {
   localStorage.setItem("formulasnap-subject", "Further Mathematics");
   localStorage.setItem("formulasnap-topic", "FPM1");
   render(<App />);
@@ -38,7 +38,7 @@ it("persists Further Mathematics and explains the source's empty Decision 1 topi
   fireEvent.click(screen.getByRole("button", { name: "Open Settings" }));
   expect((screen.getAllByRole("combobox")[0] as HTMLSelectElement).value).toBe("Further Mathematics");
   const topics = screen.getAllByRole("combobox")[1];
-  expect(Array.from((topics as HTMLSelectElement).options).map(o => o.value)).toEqual(["All", "FPM1", "FPM2", "FPM3", "Decision 1"]);
+  expect(Array.from((topics as HTMLSelectElement).options).map(o => o.value)).toEqual(["All", "Further Pure 1", "Further Pure 2", "Further Pure 3", "Decision 1"]);
   fireEvent.change(topics, { target: { value: "Decision 1" } });
   fireEvent.click(screen.getByRole("button", { name: "Done" }));
   expect(screen.getByText(/lists no required formulae/)).toBeTruthy();

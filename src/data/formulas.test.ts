@@ -8,7 +8,7 @@ describe("formula library", () => {
   it("routes the booklet's further-pure modules separately and excludes data tables", () => {
     expect(pearsonFormulas.length).toBe(146);
     for (const formula of pearsonFormulas) {
-      expect(formula.subject).toBe(formula.topic.startsWith("FPM") ? "Further Mathematics" : "Maths");
+      expect(formula.subject).toBe(formula.topic.startsWith("Further Pure ") ? "Further Mathematics" : "Maths");
       expect(formula.variables.length).toBeGreaterThan(0);
       expect(formula.notes).toMatch(/Pearson IAL Mathematics Formula Book, p\. \d+\./);
       expect(formula.topic).not.toBe("Mechanics 3");

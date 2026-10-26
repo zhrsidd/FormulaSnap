@@ -11,9 +11,9 @@ variables, domain conditions and page references in Notes.
 | Maths / Pure 2 | 10 | 3 | Sequences, series, change of base, binomial coefficients and expansions, trapezium rule |
 | Maths / Pure 3 | 19 | 4–5 | Exponential identity, angle sums/differences, sum-to-product identities, missing derivatives, quotient rule and integrals |
 | Maths / Pure 4 | 3 | 5 | Secant/cosecant integrals with equivalent forms, integration by parts |
-| Further Mathematics / FPM1 | 10 | 6 | Summations, Newton–Raphson, conics, rotation and reflection |
-| Further Mathematics / FPM2 | 12 | 7 | Polar area, complex numbers, roots of unity, Maclaurin and Taylor series |
-| Further Mathematics / FPM3 | 53 | 8–11 | Vectors, hyperbolic functions, conics, derivatives, integrals, arc lengths and surfaces of revolution |
+| Further Mathematics / Further Pure 1 | 10 | 6 | Summations, Newton–Raphson, conics, rotation and reflection |
+| Further Mathematics / Further Pure 2 | 12 | 7 | Polar area, complex numbers, roots of unity, Maclaurin and Taylor series |
+| Further Mathematics / Further Pure 3 | 53 | 8–11 | Vectors, hyperbolic functions, conics, derivatives, integrals, arc lengths and surfaces of revolution |
 | Maths / Mechanics 2 | 3 | 13 | Centres of mass of triangular lamina, arc and sector |
 | Maths / Statistics 1 | 15 | 14–17 | Probability, distributions, expectations, variance, correlation, regression, normal CDF and upper-tail definition |
 | Maths / Statistics 2 | 10 | 18 | Binomial/Poisson probabilities and moments, continuous expectations/variance/CDF, uniform distribution |
@@ -25,7 +25,7 @@ uses the separate S_xx, S_yy and S_xy definitions. Series are sometimes expresse
 with summation notation rather than printing many terms. Existing formula IDs
 are preserved. The binomial series shared by P2 and P4 remains in Pure 2, with
 its P4 applicability noted; FP3 conic relationships already introduced in FP1
-remain in FPM1 rather than being duplicated.
+remain in Further Pure 1 rather than being duplicated.
 
 Decision 1 appears under Further Mathematics with an explanation: the source
 explicitly supplies no required D1 formulae (p. 1). No outside-source D1

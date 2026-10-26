@@ -134,7 +134,7 @@ FormulaSnap contains formulas covering Edexcel International A Level Mathematics
 
 ### Further Mathematics
 
-- FPM1, FPM2 and FPM3 (Pearson FP1–FP3)
+- Further Pure 1, Further Pure 2 and Further Pure 3 (Pearson FP1–FP3)
 - Decision 1: the Pearson booklet supplies no required formulae; the topic explains this
 
 The library includes 146 additional equation cards from the [Pearson formula booklet](https://qualifications.pearson.com/content/dam/pdf/International%20Advanced%20Level/Mathematics/2018/Specification-and-Sample-Assessment/IAL-Mathematics-Formula-Book.pdf), with printed page references in Notes. See [coverage and exclusions](docs/pearson-formula-coverage.md). Numerical lookup tables and M3 are excluded from this expansion.

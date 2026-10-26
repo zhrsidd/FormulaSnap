@@ -106,7 +106,7 @@ function App() {
 
   const [selectedTopic, setSelectedTopic] = useState(
     () =>
-      localStorage.getItem("formulasnap-topic") ??
+      localStorage.getItem("formulasnap-topic")?.replace(/^FPM([123])$/, "Further Pure $1") ??
       "All"
   );
 

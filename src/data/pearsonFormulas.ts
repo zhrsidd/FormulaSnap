@@ -9,7 +9,7 @@ function group(topic: string, page: number, further = false) {
   return (id: string, name: string, formula: string, latex: string, variables: Record<string, string>, notes = "") => {
     pearsonFormulas.push({
       id: `pearson-${id}`, name, subject: further ? "Further Mathematics" : "Maths", topic,
-      formula, latex, aliases: [name.toLowerCase(), id.replace(/-/g, " "), topic, topic.replace("FPM", "FP")],
+      formula, latex, aliases: [name.toLowerCase(), id.replace(/-/g, " "), topic, topic.replace("Further Pure ", "FP"), topic.replace("Further Pure ", "FPM")],
       variables: Object.entries(variables).map(([symbol, name]) => ({ symbol, name })),
       notes: `${notes ? `${notes} ` : ""}Pearson IAL Mathematics Formula Book, p. ${page}.`,
     });
@@ -62,7 +62,7 @@ p4("p4-integral-cosec", "Integral of cosec x", "∫cosec x dx = −ln|cosec x + 
 p4("p4-integral-sec", "Integral of sec x", "∫sec x dx = ln|sec x + tan x| + C = ln|tan(x/2 + π/4)| + C", L`\begin{aligned}\int\sec x\,dx&=\ln|\sec x+\tan x|+C\\&=\ln|\tan(x/2+\pi/4)|+C\end{aligned}`, { x: "variable in radians", C: "integration constant" });
 p4("p4-parts", "Integration by Parts", "∫u(dv/dx) dx = uv − ∫v(du/dx) dx", L`\int u\frac{dv}{dx}\,dx=uv-\int v\frac{du}{dx}\,dx`, { u: "differentiable function of x", v: "antiderivative of dv/dx" }, "Include an arbitrary integration constant for indefinite integrals.");
 
-const fp1 = group("FPM1", 6, true);
+const fp1 = group("Further Pure 1", 6, true);
 fp1("fp1-sum-squares", "Sum of Squares", "Σ_(r=1)^n r² = n(n + 1)(2n + 1)/6", L`\sum_{r=1}^n r^2=\frac{n(n+1)(2n+1)}6`, { n: "positive integer upper limit", r: "summation index" });
 fp1("fp1-sum-cubes", "Sum of Cubes", "Σ_(r=1)^n r³ = n²(n + 1)²/4", L`\sum_{r=1}^n r^3=\frac{n^2(n+1)^2}4`, { n: "positive integer upper limit", r: "summation index" });
 fp1("fp1-newton", "Newton–Raphson Iteration", "x_(n+1) = x_n − f(x_n)/f′(x_n)", L`x_{n+1}=x_n-\frac{f(x_n)}{f'(x_n)}`, { x_n: "current root estimate", "x_(n+1)": "next estimate", f: "function whose root is sought", "f′": "derivative of f" }, "Requires f′(x_n) ≠ 0; convergence is not guaranteed.");
@@ -74,7 +74,7 @@ fp1("fp1-rect-hyperbola-param", "Rectangular Hyperbola: Parametric Coordinates",
 fp1("fp1-rotation", "Anticlockwise Rotation Matrix", "R = [[cos θ, −sin θ], [sin θ, cos θ]]", L`R=\begin{pmatrix}\cos\theta&-\sin\theta\\\sin\theta&\cos\theta\end{pmatrix}`, { θ: "anticlockwise angle about the origin", R: "matrix multiplying column position vectors" });
 fp1("fp1-reflection", "Reflection Matrix in y = (tan θ)x", "M = [[cos 2θ, sin 2θ], [sin 2θ, −cos 2θ]]", L`M=\begin{pmatrix}\cos2\theta&\sin2\theta\\\sin2\theta&-\cos2\theta\end{pmatrix}`, { θ: "angle of the mirror line with positive x-axis", M: "matrix multiplying column position vectors" });
 
-const fp2 = group("FPM2", 7, true);
+const fp2 = group("Further Pure 2", 7, true);
 fp2("fp2-polar-area", "Area in Polar Coordinates", "A = 1/2 ∫_α^β r² dθ", L`A=\frac12\int_\alpha^\beta r^2\,d\theta`, { r: "polar radius as a function of θ", θ: "angle in radians", α: "starting angle", β: "ending angle" }, "Choose bounds that trace the required region once.");
 fp2("fp2-euler", "Euler's Complex Exponential", "e^(iθ) = cos θ + i sin θ", L`e^{i\theta}=\cos\theta+i\sin\theta`, { i: "imaginary unit, i² = −1", θ: "real angle in radians" });
 fp2("fp2-demoivre", "De Moivre's Theorem", "[r(cos θ + i sin θ)]^n = r^n(cos nθ + i sin nθ)", L`\begin{aligned}[r(\cos\theta+i\sin\theta)]^n\\=r^n(\cos n\theta+i\sin n\theta)\end{aligned}`, { r: "modulus", θ: "argument in radians", n: "integer power", i: "imaginary unit" }, "For negative n the complex number must be non-zero.");
@@ -90,7 +90,7 @@ for (const [id, name, plain, latex, condition] of [
   ["arctan", "Maclaurin Series for arctan x", "arctan x = Σ_(r=0)^∞ (−1)^r x^(2r+1)/(2r+1)", L`\arctan x=\sum_{r=0}^{\infty}\frac{(-1)^r x^{2r+1}}{2r+1}`, "For −1 ≤ x ≤ 1; result in radians."],
 ]) fp2(`fp2-series-${id}`, name, plain, latex, { x: "expansion variable", r: "summation index" }, condition);
 
-const fp3v = group("FPM3", 8, true);
+const fp3v = group("Further Pure 3", 8, true);
 fp3v("fp3-projection", "Scalar Projection of a onto b", "component = (a · b)/|b|", L`\text{component}=\frac{\mathbf a\cdot\mathbf b}{|\mathbf b|}`, { a: "vector being resolved", b: "non-zero direction vector" }, "A signed scalar component, not the vector projection.");
 fp3v("fp3-section", "Vector Section Formula", "r = (μa + λb)/(λ + μ)", L`\mathbf r=\frac{\mu\mathbf a+\lambda\mathbf b}{\lambda+\mu}`, { a: "position vector of A", b: "position vector of B", λ: "AP ratio part", μ: "PB ratio part", r: "position vector of P" }, "For P dividing AB internally in the ratio AP:PB = λ:μ, with λ, μ > 0.");
 fp3v("fp3-cross", "Vector Product: Geometric Form", "a × b = |a||b| sin θ n̂", L`\mathbf a\times\mathbf b=|\mathbf a||\mathbf b|\sin\theta\,\hat{\mathbf n}`, { a: "first vector", b: "second vector", θ: "angle between vectors", n̂: "unit normal given by the right-hand rule" });
@@ -101,8 +101,8 @@ fp3v("fp3-plane-cartesian", "Cartesian Equation of a Plane", "n₁x + n₂y + n�
 fp3v("fp3-plane-three-points", "Plane through Three Points", "r = a + λ(b − a) + μ(c − a)", L`\begin{aligned}\mathbf r&=\mathbf a+\lambda(\mathbf b-\mathbf a)+\mu(\mathbf c-\mathbf a)\\&=(1-\lambda-\mu)\mathbf a+\lambda\mathbf b+\mu\mathbf c\end{aligned}`, { "a, b, c": "position vectors of three non-collinear points", "λ, μ": "real parameters", r: "general position vector on the plane" });
 fp3v("fp3-plane-parametric", "Parametric Vector Equation of a Plane", "r = a + sb + tc", L`\mathbf r=\mathbf a+s\mathbf b+t\mathbf c`, { a: "position vector of a point on the plane", "b, c": "non-parallel vectors parallel to the plane", "s, t": "real parameters", r: "general position vector" });
 fp3v("fp3-point-plane-distance", "Perpendicular Distance from Point to Plane", "D = |n₁α + n₂β + n₃γ + d|/√(n₁² + n₂² + n₃²)", L`D=\frac{|n_1\alpha+n_2\beta+n_3\gamma+d|}{\sqrt{n_1^2+n_2^2+n_3^2}}`, { "(α, β, γ)": "coordinates of the point", "(n₁, n₂, n₃)": "non-zero normal to the plane", d: "constant in n₁x + n₂y + n₃z + d = 0", D: "perpendicular distance" });
-const fp3h = group("FPM3", 9, true);
-fp3h("fp3-parabola-ecc", "Parabola: Eccentricity", "e = 1", L`e=1`, { e: "eccentricity of a parabola" }, "See FPM1 for the standard equation, parameters, focus and directrix.");
+const fp3h = group("Further Pure 3", 9, true);
+fp3h("fp3-parabola-ecc", "Parabola: Eccentricity", "e = 1", L`e=1`, { e: "eccentricity of a parabola" }, "See Further Pure 1 for the standard equation, parameters, focus and directrix.");
 for (const [id, name, plain, latex, condition] of [
   ["identity", "Hyperbolic Pythagorean Identity", "cosh² x − sinh² x = 1", L`\cosh^2x-\sinh^2x=1`, "For all real x."],
   ["sinh-double", "Hyperbolic Sine Double Angle", "sinh 2x = 2sinh x cosh x", L`\sinh2x=2\sinh x\cosh x`, "For all real x."],
@@ -125,7 +125,7 @@ fp3h("fp3-rect-hyperbola-ecc", "Rectangular Hyperbola: Eccentricity", "e = √2"
 fp3h("fp3-rect-hyperbola-foci", "Rectangular Hyperbola: Foci", "foci = (√2c, √2c), (−√2c, −√2c)", L`\begin{aligned}F_1&=(\sqrt2c,\sqrt2c)\\F_2&=(-\sqrt2c,-\sqrt2c)\end{aligned}`, { c: "positive scale parameter in xy = c²" }, "The coordinate signs match; these are two foci, not four.");
 fp3h("fp3-rect-hyperbola-directrices", "Rectangular Hyperbola: Directrices", "x + y = ±√2c", L`x+y=\pm\sqrt2c`, { c: "positive scale parameter in xy = c²" });
 fp3h("fp3-rect-hyperbola-asymptotes", "Rectangular Hyperbola: Asymptotes", "x = 0; y = 0", L`x=0,\qquad y=0`, { "x, y": "coordinates for xy = c²" });
-const fp3c = group("FPM3", 10, true);
+const fp3c = group("Further Pure 3", 10, true);
 for (const [id, fn, result, latex, condition] of [
   ["arcsin", "arcsin x", "1/√(1 − x²)", L`\frac d{dx}\arcsin x=\frac1{\sqrt{1-x^2}}`, "For |x| < 1; angle in radians."],
   ["arccos", "arccos x", "−1/√(1 − x²)", L`\frac d{dx}\arccos x=-\frac1{\sqrt{1-x^2}}`, "For |x| < 1; angle in radians."],
@@ -148,7 +148,7 @@ for (const [id, name, plain, latex, condition] of [
   ["a2-minus-x2", "Integral of 1/(a² − x²)", "∫dx/(a² − x²) = ln|(a + x)/(a − x)|/(2a) + C = artanh(x/a)/a + C", L`\begin{aligned}\int\frac{dx}{a^2-x^2}&=\frac1{2a}\ln\left|\frac{a+x}{a-x}\right|+C\\&=\frac1a\operatorname{artanh}(x/a)+C\end{aligned}`, "For a > 0. Log form: x ≠ ±a on a suitable interval; real artanh form: |x| < a."],
   ["x2-minus-a2", "Integral of 1/(x² − a²)", "∫dx/(x² − a²) = ln|(x − a)/(x + a)|/(2a) + C", L`\int\frac{dx}{x^2-a^2}=\frac1{2a}\ln\left|\frac{x-a}{x+a}\right|+C`, "For a > 0 and x ≠ ±a, on an interval avoiding the singularities."],
 ]) fp3c(`fp3-integral-${id}`, name, plain, latex, { x: "integration variable", a: "positive constant, where present", C: "arbitrary integration constant" }, condition);
-const fp3a = group("FPM3", 11, true);
+const fp3a = group("Further Pure 3", 11, true);
 fp3a("fp3-arc-cartesian", "Arc Length: Cartesian Coordinates", "s = ∫_a^b √(1 + (dy/dx)²) dx", L`s=\int_a^b\sqrt{1+\left(\frac{dy}{dx}\right)^2}\,dx`, { s: "arc length", "y(x)": "differentiable curve", "a, b": "x-coordinate bounds, a < b" });
 fp3a("fp3-arc-parametric", "Arc Length: Parametric Coordinates", "s = ∫_α^β √((dx/dt)² + (dy/dt)²) dt", L`s=\int_\alpha^\beta\sqrt{\left(\frac{dx}{dt}\right)^2+\left(\frac{dy}{dt}\right)^2}\,dt`, { s: "arc length", t: "parameter", "x(t), y(t)": "differentiable coordinate functions", "α, β": "parameter bounds, α < β" }, "Choose bounds that traverse the required arc once.");
 fp3a("fp3-surface-cartesian", "Surface of Revolution: Cartesian Form", "S_x = 2π∫ y ds = 2π∫_a^b y√(1 + (dy/dx)²) dx", L`\begin{aligned}S_x&=2\pi\int y\,ds\\&=2\pi\int_a^b y\sqrt{1+\left(\frac{dy}{dx}\right)^2}\,dx\end{aligned}`, { S_x: "curved surface area about the x-axis", y: "non-negative radius from x-axis", "a, b": "x-coordinate bounds" }, "For y ≥ 0. If the curve is below the x-axis, use |y| as the radius. End caps are excluded.");
