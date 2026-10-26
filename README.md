@@ -61,7 +61,8 @@ FormulaSnap lets you instantly search Maths and Physics formulas from anywhere o
 - 🎯 Filter formulas by subject and topic
 - 🪟 Optional Always on Top mode
 - 💾 Favorites, recents, filters, and settings are stored locally
-- 🚫 No internet connection or AI required at runtime
+- 🔄 Signed automatic desktop updates from GitHub Releases
+- 🚫 Offline formula search with no AI required
 
 ![FormulaSnap settings](assets/screenshots/settings.png)
 
@@ -108,9 +109,11 @@ can be used to quickly find relevant formulas.
 
 ## 📚 Formula Library
 
-FormulaSnap currently contains formulas covering Edexcel International A Level Mathematics and Physics.
+FormulaSnap contains formulas covering Edexcel International A Level Mathematics and Physics, plus a General physics collection for common calculations beyond the formula sheet.
 
 ### Physics
+
+- General — work done, power, energy, efficiency, speed, acceleration, pressure, circuits, and other everyday relationships
 
 - Unit 1 — Mechanics and Materials
 - Unit 2 — Waves and Electricity
@@ -181,6 +184,38 @@ Start FormulaSnap in development mode:
 npm run tauri dev
 ```
 
+## Automatic desktop updates
+
+Every push to `main` runs `.github/workflows/release.yml`, builds a universal macOS
+app for Apple Silicon and Intel, and publishes a signed GitHub Release with
+`latest.json`. The app checks five seconds after launch and every four hours,
+downloads and installs available updates automatically, then offers **Restart now**.
+Settings also includes **Check for updates**. Offline checks leave searching usable.
+
+Existing 1.0.0 installations need one manual replacement with an updater-enabled
+build. After that, updates come from GitHub Releases. The browser demo continues
+to update through GitHub Pages.
+
+The updater public key is in `src-tauri/tauri.conf.json`. The matching private key
+is stored in the repository Actions secret `TAURI_SIGNING_PRIVATE_KEY`; keep a
+secure backup at `~/.tauri/formulasnap-updater.key`. Never commit the private key.
+Update signatures follow [Tauri's updater documentation](https://v2.tauri.app/plugin/updater/).
+macOS builds use ad-hoc app signing; updater signatures are separate from Apple
+Developer ID signing and notarization.
+
+Release versions are derived from the base version in `tauri.conf.json`, adding
+`GITHUB_RUN_NUMBER` to its patch number (base `1.1.0`, run 42 → `1.1.42`). No manual
+version bump is needed per push. Increase the base minor or major version for a
+new release series; do not reset the workflow run counter or lower the base.
+A release stays a draft until its build and upload finish successfully.
+
+To build a signed update locally:
+
+```sh
+TAURI_SIGNING_PRIVATE_KEY="$HOME/.tauri/formulasnap-updater.key" \
+TAURI_SIGNING_PRIVATE_KEY_PASSWORD='' npm run tauri build
+```
+
 ## 📦 Building
 
 To create a production build:
@@ -227,7 +262,6 @@ Possible future improvements include:
 - Additional keyboard shortcuts
 - Improved formula discovery
 - Windows support
-- Automatic update support
 
 ## 🧑‍💻 Development
 

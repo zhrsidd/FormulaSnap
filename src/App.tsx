@@ -16,6 +16,8 @@ import { invoke, isTauri } from "@tauri-apps/api/core";
 import "katex/dist/katex.min.css";
 import "./App.css";
 
+import { AppUpdates } from "./components/AppUpdates";
+
 import { formulas } from "./data/formulas";
 
 type SubjectFilter =
@@ -299,12 +301,14 @@ function App() {
       const item = byId.get(id);
       return item ? [item] : [];
     });
+    const savedIds = new Set([...favoriteIds, ...recentIds]);
     return [
       { label: "Favorites", items: resolve(favoriteIds) },
       // Favorites already appear above; retain them in stored history.
       { label: "Recents", items: resolve(recentIds.filter((id) => !favoriteSet.has(id))) },
+      { label: selectedTopic, items: selectedTopic === "All" ? [] : filteredFormulas.filter((item) => !savedIds.has(item.id)) },
     ].filter((section) => section.items.length > 0);
-  }, [isSearching, query, fuse, filteredFormulas, favoriteIds, recentIds, favoriteSet]);
+  }, [isSearching, query, fuse, filteredFormulas, favoriteIds, recentIds, favoriteSet, selectedTopic]);
   const visibleResults = useMemo(() => sections.flatMap((section) => section.items), [sections]);
 
   const copyFormula = useCallback(async (item: (typeof formulas)[number], hide = false) => {
@@ -541,6 +545,8 @@ function App() {
           )}
         </div>
 
+        {isDesktop && <AppUpdates showControls={showSettings} />}
+
         {!showSettings ? (
           <>
             {/* Search */}
@@ -563,9 +569,13 @@ function App() {
               {visibleResults.map(
                 (item, index) => (
                   <Fragment key={item.id}>
-                  {!isSearching && (index === 0 || index === sections[0]?.items.length) && (
+                  {!isSearching && sections.some((_, sectionIndex) =>
+                    index === sections.slice(0, sectionIndex).reduce((total, section) => total + section.items.length, 0)
+                  ) && (
                     <h3 className="results-section-label">
-                      {index === 0 ? sections[0]?.label : sections[1]?.label}
+                      {sections.find((_, sectionIndex) =>
+                        index === sections.slice(0, sectionIndex).reduce((total, section) => total + section.items.length, 0)
+                      )?.label}
                     </h3>
                   )}
                   <div

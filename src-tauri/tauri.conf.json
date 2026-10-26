@@ -1,6 +1,6 @@
 {
-  "productName": "FormulaSnap", 
-  "version": "1.0.0",
+  "productName": "FormulaSnap",
+  "version": "1.1.0",
   "identifier": "com.formulasnap.com",
   "build": {
     "beforeDevCommand": "npm run dev",
@@ -10,20 +10,19 @@
   },
   "app": {
     "macOSPrivateApi": true,
-
     "windows": [
-  {
-    "title": "FormulaSnap",
-    "width": 650,
-    "height": 520,
-    "resizable": false,
-    "center": true,
-    "alwaysOnTop": false,
-    "skipTaskbar": true,
-    "transparent": true,
-    "decorations": false
-  }
-],
+      {
+        "title": "FormulaSnap",
+        "width": 650,
+        "height": 520,
+        "resizable": false,
+        "center": true,
+        "alwaysOnTop": false,
+        "skipTaskbar": true,
+        "transparent": true,
+        "decorations": false
+      }
+    ],
     "security": {
       "csp": null
     }
@@ -37,6 +36,18 @@
       "icons/128x128@2x.png",
       "icons/icon.icns",
       "icons/icon.ico"
-    ]
+    ],
+    "createUpdaterArtifacts": true,
+    "macOS": {
+      "signingIdentity": "-"
+    }
+  },
+  "plugins": {
+    "updater": {
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDJDNzNENEUxMUE4OTgzOTEKUldTUmc0a2E0ZFJ6TENzVWQyWDVHcG9aTk1OOTBEUGVWaTdFUHdVV3I2REhIQWc4OWlOMWJyUmMK",
+      "endpoints": [
+        "https://github.com/zhrsidd/FormulaSnap/releases/latest/download/latest.json"
+      ]
+    }
   }
 }

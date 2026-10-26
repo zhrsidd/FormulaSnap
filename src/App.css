@@ -344,6 +344,27 @@ background 0.15s ease,
   text-align: right;
 }
 
+.update-status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-shrink: 0;
+  padding: 10px 12px;
+  margin-top: 12px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.update-status p {
+  margin: 0;
+  color: #b9c2d0;
+  font-size: 12px;
+}
+
+.update-status button { flex-shrink: 0; }
+.update-status button:disabled { opacity: 0.5; cursor: default; }
+
 /* Settings toggle */
 
 .switch {

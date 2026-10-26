@@ -17,6 +17,668 @@ export type Formula = {
 };
 
 export const formulas: Formula[] = [
+
+  // PHYSICS — GENERAL: common relationships beyond the formula sheet
+
+  {
+    "id": "physics-general-work-done",
+    "name": "Work Done",
+    "subject": "Physics",
+    "topic": "General",
+    "formula": "W = Fs cos(θ)",
+    "latex": "W = Fs\\cos\\theta",
+    "aliases": [
+      "work done",
+      "force times distance",
+      "energy transferred",
+      "W = Fd"
+    ],
+    "variables": [
+      {
+        "symbol": "W",
+        "name": "work done",
+        "unit": "J"
+      },
+      {
+        "symbol": "F",
+        "name": "constant force",
+        "unit": "N"
+      },
+      {
+        "symbol": "s",
+        "name": "displacement",
+        "unit": "m"
+      },
+      {
+        "symbol": "θ",
+        "name": "angle between force and displacement",
+        "unit": "rad"
+      }
+    ],
+    "notes": "For a constant force. When force and displacement are parallel, W = Fs; a perpendicular force does no work."
+  },
+
+  {
+    "id": "physics-general-power",
+    "name": "Average Power",
+    "subject": "Physics",
+    "topic": "General",
+    "formula": "P = E / t = W / t",
+    "latex": "P = \\frac{E}{t} = \\frac{W}{t}",
+    "aliases": [
+      "power",
+      "work per second",
+      "energy per second",
+      "rate of energy transfer"
+    ],
+    "variables": [
+      {
+        "symbol": "P",
+        "name": "average power",
+        "unit": "W"
+      },
+      {
+        "symbol": "E",
+        "name": "energy transferred",
+        "unit": "J"
+      },
+      {
+        "symbol": "W",
+        "name": "work done",
+        "unit": "J"
+      },
+      {
+        "symbol": "t",
+        "name": "time interval",
+        "unit": "s"
+      }
+    ],
+    "notes": "Power is the rate of energy transfer. One watt is one joule per second."
+  },
+
+  {
+    "id": "physics-general-mechanical-power",
+    "name": "Mechanical Power",
+    "subject": "Physics",
+    "topic": "General",
+    "formula": "P = Fv cos(θ)",
+    "latex": "P = Fv\\cos\\theta",
+    "aliases": [
+      "power force velocity",
+      "P = Fv",
+      "engine power"
+    ],
+    "variables": [
+      {
+        "symbol": "P",
+        "name": "instantaneous power",
+        "unit": "W"
+      },
+      {
+        "symbol": "F",
+        "name": "force",
+        "unit": "N"
+      },
+      {
+        "symbol": "v",
+        "name": "velocity magnitude",
+        "unit": "m s⁻¹"
+      },
+      {
+        "symbol": "θ",
+        "name": "angle between force and velocity",
+        "unit": "rad"
+      }
+    ],
+    "notes": "For force parallel to velocity, P = Fv."
+  },
+
+  {
+    "id": "physics-general-kinetic-energy",
+    "name": "Kinetic Energy",
+    "subject": "Physics",
+    "topic": "General",
+    "formula": "E_k = 1/2 mv²",
+    "latex": "E_k = \\frac{1}{2}mv^2",
+    "aliases": [
+      "kinetic energy",
+      "energy of motion",
+      "KE"
+    ],
+    "variables": [
+      {
+        "symbol": "E_k",
+        "name": "kinetic energy",
+        "unit": "J"
+      },
+      {
+        "symbol": "m",
+        "name": "mass",
+        "unit": "kg"
+      },
+      {
+        "symbol": "v",
+        "name": "speed",
+        "unit": "m s⁻¹"
+      }
+    ],
+    "notes": "For speeds much smaller than the speed of light."
+  },
+
+  {
+    "id": "physics-general-potential-energy",
+    "name": "Change in Gravitational Potential Energy",
+    "subject": "Physics",
+    "topic": "General",
+    "formula": "ΔE_p = mgΔh",
+    "latex": "\\Delta E_p = mg\\,\\Delta h",
+    "aliases": [
+      "gravitational potential energy",
+      "GPE",
+      "mgh",
+      "energy gained lifting"
+    ],
+    "variables": [
+      {
+        "symbol": "ΔE_p",
+        "name": "change in gravitational potential energy",
+        "unit": "J"
+      },
+      {
+        "symbol": "m",
+        "name": "mass",
+        "unit": "kg"
+      },
+      {
+        "symbol": "g",
+        "name": "gravitational field strength",
+        "unit": "N kg⁻¹"
+      },
+      {
+        "symbol": "Δh",
+        "name": "change in height",
+        "unit": "m"
+      }
+    ],
+    "notes": "Assumes approximately uniform gravitational field strength. Raising an object increases its potential energy."
+  },
+
+  {
+    "id": "physics-general-efficiency-energy",
+    "name": "Energy Efficiency",
+    "subject": "Physics",
+    "topic": "General",
+    "formula": "η = E_useful / E_input",
+    "latex": "\\eta = \\frac{E_{\\text{useful}}}{E_{\\text{input}}}",
+    "aliases": [
+      "efficiency",
+      "useful output total input",
+      "percentage efficiency"
+    ],
+    "variables": [
+      {
+        "symbol": "η",
+        "name": "efficiency",
+        "unit": "dimensionless"
+      },
+      {
+        "symbol": "E_useful",
+        "name": "useful output energy",
+        "unit": "J"
+      },
+      {
+        "symbol": "E_input",
+        "name": "total input energy",
+        "unit": "J"
+      }
+    ],
+    "notes": "Multiply the ratio by 100% to express efficiency as a percentage."
+  },
+
+  {
+    "id": "physics-general-efficiency-power",
+    "name": "Power Efficiency",
+    "subject": "Physics",
+    "topic": "General",
+    "formula": "η = P_useful / P_input",
+    "latex": "\\eta = \\frac{P_{\\text{useful}}}{P_{\\text{input}}}",
+    "aliases": [
+      "efficiency",
+      "useful output power",
+      "percentage efficiency"
+    ],
+    "variables": [
+      {
+        "symbol": "η",
+        "name": "efficiency",
+        "unit": "dimensionless"
+      },
+      {
+        "symbol": "P_useful",
+        "name": "useful output power",
+        "unit": "W"
+      },
+      {
+        "symbol": "P_input",
+        "name": "total input power",
+        "unit": "W"
+      }
+    ],
+    "notes": "Compare input and output over the same time interval. Multiply by 100% for percentage efficiency."
+  },
+
+  {
+    "id": "physics-general-speed",
+    "name": "Average Speed",
+    "subject": "Physics",
+    "topic": "General",
+    "formula": "speed = total distance / total time",
+    "latex": "\\text{average speed} = \\frac{\\text{total distance}}{\\text{total time}}",
+    "aliases": [
+      "speed distance time",
+      "distance over time"
+    ],
+    "variables": [
+      {
+        "symbol": "distance",
+        "name": "total distance travelled",
+        "unit": "m"
+      },
+      {
+        "symbol": "time",
+        "name": "total elapsed time",
+        "unit": "s"
+      },
+      {
+        "symbol": "speed",
+        "name": "average speed",
+        "unit": "m s⁻¹"
+      }
+    ],
+    "notes": "Uses total distance travelled, including any changes in direction."
+  },
+
+  {
+    "id": "physics-general-velocity",
+    "name": "Average Velocity",
+    "subject": "Physics",
+    "topic": "General",
+    "formula": "v_avg = Δs / Δt",
+    "latex": "v_{\\text{avg}} = \\frac{\\Delta s}{\\Delta t}",
+    "aliases": [
+      "velocity displacement time",
+      "displacement over time"
+    ],
+    "variables": [
+      {
+        "symbol": "v_avg",
+        "name": "average velocity",
+        "unit": "m s⁻¹"
+      },
+      {
+        "symbol": "Δs",
+        "name": "displacement",
+        "unit": "m"
+      },
+      {
+        "symbol": "Δt",
+        "name": "time interval",
+        "unit": "s"
+      }
+    ],
+    "notes": "Uses displacement, so direction matters. A return to the starting point gives zero average velocity."
+  },
+
+  {
+    "id": "physics-general-acceleration",
+    "name": "Average Acceleration",
+    "subject": "Physics",
+    "topic": "General",
+    "formula": "a = (v - u) / Δt",
+    "latex": "a = \\frac{v-u}{\\Delta t}",
+    "aliases": [
+      "acceleration",
+      "change in velocity over time",
+      "deceleration"
+    ],
+    "variables": [
+      {
+        "symbol": "a",
+        "name": "average acceleration",
+        "unit": "m s⁻²"
+      },
+      {
+        "symbol": "v",
+        "name": "final velocity",
+        "unit": "m s⁻¹"
+      },
+      {
+        "symbol": "u",
+        "name": "initial velocity",
+        "unit": "m s⁻¹"
+      },
+      {
+        "symbol": "Δt",
+        "name": "time interval",
+        "unit": "s"
+      }
+    ],
+    "notes": "Use velocities with a consistent positive direction. Gives instantaneous acceleration if acceleration is constant."
+  },
+
+  {
+    "id": "physics-general-pressure",
+    "name": "Pressure",
+    "subject": "Physics",
+    "topic": "General",
+    "formula": "p = F / A",
+    "latex": "p = \\frac{F}{A}",
+    "aliases": [
+      "pressure",
+      "force per unit area"
+    ],
+    "variables": [
+      {
+        "symbol": "p",
+        "name": "pressure",
+        "unit": "Pa"
+      },
+      {
+        "symbol": "F",
+        "name": "normal force",
+        "unit": "N"
+      },
+      {
+        "symbol": "A",
+        "name": "area",
+        "unit": "m²"
+      }
+    ],
+    "notes": "Force acts perpendicular to the surface. Gives average pressure if the force is not distributed uniformly."
+  },
+
+  {
+    "id": "physics-general-liquid-pressure",
+    "name": "Pressure Difference in a Liquid",
+    "subject": "Physics",
+    "topic": "General",
+    "formula": "Δp = ρgΔh",
+    "latex": "\\Delta p = \\rho g\\,\\Delta h",
+    "aliases": [
+      "hydrostatic pressure",
+      "liquid pressure",
+      "pressure depth",
+      "rho g h"
+    ],
+    "variables": [
+      {
+        "symbol": "Δp",
+        "name": "pressure increase",
+        "unit": "Pa"
+      },
+      {
+        "symbol": "ρ",
+        "name": "liquid density",
+        "unit": "kg m⁻³"
+      },
+      {
+        "symbol": "g",
+        "name": "gravitational field strength",
+        "unit": "N kg⁻¹"
+      },
+      {
+        "symbol": "Δh",
+        "name": "increase in depth",
+        "unit": "m"
+      }
+    ],
+    "notes": "For a stationary liquid of uniform density in a uniform gravitational field. Add surface pressure to obtain absolute pressure."
+  },
+
+  {
+    "id": "physics-general-frequency",
+    "name": "Frequency and Period",
+    "subject": "Physics",
+    "topic": "General",
+    "formula": "f = 1 / T",
+    "latex": "f = \\frac{1}{T}",
+    "aliases": [
+      "frequency",
+      "period",
+      "cycles per second"
+    ],
+    "variables": [
+      {
+        "symbol": "f",
+        "name": "frequency",
+        "unit": "Hz"
+      },
+      {
+        "symbol": "T",
+        "name": "period",
+        "unit": "s"
+      }
+    ],
+    "notes": "The period is the time for one complete cycle; this applies to any periodic motion or wave."
+  },
+
+  {
+    "id": "physics-general-charge",
+    "name": "Charge Flow",
+    "subject": "Physics",
+    "topic": "General",
+    "formula": "Q = It",
+    "latex": "Q = It",
+    "aliases": [
+      "charge",
+      "current time",
+      "charge flow"
+    ],
+    "variables": [
+      {
+        "symbol": "Q",
+        "name": "charge transferred",
+        "unit": "C"
+      },
+      {
+        "symbol": "I",
+        "name": "constant current",
+        "unit": "A"
+      },
+      {
+        "symbol": "t",
+        "name": "time interval",
+        "unit": "s"
+      }
+    ],
+    "notes": "For constant current, or use the average current over the interval."
+  },
+
+  {
+    "id": "physics-general-series-resistance",
+    "name": "Resistance in Series",
+    "subject": "Physics",
+    "topic": "General",
+    "formula": "R_total = R₁ + R₂ + …",
+    "latex": "R_{\\text{total}} = R_1 + R_2 + \\cdots",
+    "aliases": [
+      "series resistors",
+      "total resistance",
+      "equivalent resistance series"
+    ],
+    "variables": [
+      {
+        "symbol": "R_total",
+        "name": "total resistance",
+        "unit": "Ω"
+      },
+      {
+        "symbol": "R₁, R₂, …",
+        "name": "individual resistances",
+        "unit": "Ω"
+      }
+    ],
+    "notes": "The same current flows through every resistor in series."
+  },
+
+  {
+    "id": "physics-general-parallel-resistance",
+    "name": "Resistance in Parallel",
+    "subject": "Physics",
+    "topic": "General",
+    "formula": "1 / R_total = 1 / R₁ + 1 / R₂ + …",
+    "latex": "\\frac{1}{R_{\\text{total}}} = \\frac{1}{R_1} + \\frac{1}{R_2} + \\cdots",
+    "aliases": [
+      "parallel resistors",
+      "total resistance",
+      "equivalent resistance parallel"
+    ],
+    "variables": [
+      {
+        "symbol": "R_total",
+        "name": "total resistance",
+        "unit": "Ω"
+      },
+      {
+        "symbol": "R₁, R₂, …",
+        "name": "individual resistances",
+        "unit": "Ω"
+      }
+    ],
+    "notes": "The same potential difference acts across every parallel branch."
+  },
+
+  {
+    "id": "physics-general-emf-internal-resistance",
+    "name": "EMF and Internal Resistance",
+    "subject": "Physics",
+    "topic": "General",
+    "formula": "ε = V + Ir",
+    "latex": "\\varepsilon = V + Ir",
+    "aliases": [
+      "emf",
+      "internal resistance",
+      "lost volts",
+      "terminal potential difference"
+    ],
+    "variables": [
+      {
+        "symbol": "ε",
+        "name": "electromotive force",
+        "unit": "V"
+      },
+      {
+        "symbol": "V",
+        "name": "terminal potential difference",
+        "unit": "V"
+      },
+      {
+        "symbol": "I",
+        "name": "current delivered by the source",
+        "unit": "A"
+      },
+      {
+        "symbol": "r",
+        "name": "internal resistance",
+        "unit": "Ω"
+      }
+    ],
+    "notes": "For a source supplying current: terminal voltage V = ε − Ir. The sign changes when charging a cell."
+  },
+
+  {
+    "id": "physics-general-transformer",
+    "name": "Ideal Transformer Voltage Ratio",
+    "subject": "Physics",
+    "topic": "General",
+    "formula": "V_s / V_p = N_s / N_p",
+    "latex": "\\frac{V_s}{V_p} = \\frac{N_s}{N_p}",
+    "aliases": [
+      "transformer",
+      "turns ratio",
+      "step up",
+      "step down"
+    ],
+    "variables": [
+      {
+        "symbol": "V_s",
+        "name": "secondary voltage",
+        "unit": "V"
+      },
+      {
+        "symbol": "V_p",
+        "name": "primary voltage",
+        "unit": "V"
+      },
+      {
+        "symbol": "N_s",
+        "name": "secondary turns",
+        "unit": "dimensionless"
+      },
+      {
+        "symbol": "N_p",
+        "name": "primary turns",
+        "unit": "dimensionless"
+      }
+    ],
+    "notes": "For an ideal transformer with alternating current; compare both RMS voltages or both peak voltages."
+  },
+
+  {
+    "id": "physics-general-work-energy",
+    "name": "Work–Energy Theorem",
+    "subject": "Physics",
+    "topic": "General",
+    "formula": "W_net = ΔE_k",
+    "latex": "W_{\\text{net}} = \\Delta E_k",
+    "aliases": [
+      "work energy theorem",
+      "net work",
+      "resultant work",
+      "change in kinetic energy"
+    ],
+    "variables": [
+      {
+        "symbol": "W_net",
+        "name": "net work done by all forces",
+        "unit": "J"
+      },
+      {
+        "symbol": "ΔE_k",
+        "name": "change in kinetic energy",
+        "unit": "J"
+      }
+    ],
+    "notes": "Net work includes the work done by all forces, including resistive forces."
+  },
+
+  {
+    "id": "physics-general-temperature",
+    "name": "Kelvin and Celsius",
+    "subject": "Physics",
+    "topic": "General",
+    "formula": "T = θ + 273.15",
+    "latex": "T = \\theta + 273.15",
+    "aliases": [
+      "temperature conversion",
+      "kelvin celsius",
+      "absolute temperature"
+    ],
+    "variables": [
+      {
+        "symbol": "T",
+        "name": "absolute temperature",
+        "unit": "K"
+      },
+      {
+        "symbol": "θ",
+        "name": "Celsius temperature",
+        "unit": "°C"
+      }
+    ],
+    "notes": "Temperature differences have the same numerical value in kelvin and degrees Celsius; many school questions use 273 as an approximation."
+  },
+
   // =========================================================
   // PHYSICS — UNIT 1: MECHANICS AND MATERIALS
   // =========================================================

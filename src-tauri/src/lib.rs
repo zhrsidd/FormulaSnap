@@ -35,6 +35,8 @@ pub fn run() {
             set_always_on_top
         ])
         .setup(move |app| {
+            app.handle().plugin(tauri_plugin_updater::Builder::new().build())?;
+            app.handle().plugin(tauri_plugin_process::init())?;
             app.global_shortcut().register(shortcut)?;
             println!("GLOBAL SHORTCUT REGISTERED");
             Ok(())
