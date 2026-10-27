@@ -159,6 +159,10 @@ not an official list of formulae that must be memorised.
 
 ### Glass appearance
 
+[Try the interactive glass comparison](https://zhrsidd.github.io/FormulaSnap/demos/glass/index.html)
+on a phone or desktop. The demo compares proposed treatments; it does not
+change the installed app’s appearance.
+
 On macOS 26 and later, the desktop app uses native clear Liquid Glass above a
 native desktop-blurring material. Earlier macOS versions use native vibrancy.
 The web demo uses translucent CSS surfaces. Settings includes **Reduce
