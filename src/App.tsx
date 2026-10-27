@@ -22,6 +22,7 @@ import { ShortcutSettings } from "./components/ShortcutSettings";
 import { AppUpdates } from "./components/AppUpdates";
 
 import { formulas } from "./data/formulas";
+import { PEARSON_FORMULA_BOOK } from "./data/pearsonFormulas";
 
 type SubjectFilter =
   | "All"
@@ -59,7 +60,8 @@ function saveIds(key: string, ids: string[]) {
 
 function App() {
   const [showSettings, setShowSettings] = useState(false);
-  const [examOnly, setExamOnly] = useState(false);
+  const [collection, setCollection] = useState<"all" | "booklet" | "extras">("all");
+  const collectionLabel = collection === "booklet" ? "Formula booklet" : "Exam extras";
   const [reduceTransparency, setReduceTransparency] = useState(() =>
     localStorage.getItem("formulasnap-reduce-transparency") === "true"
   );
@@ -253,9 +255,9 @@ function App() {
         selectedTopic === "All" ||
         formula.topic === selectedTopic;
 
-      return matchesSubject && matchesTopic && (!examOnly || Boolean(formula.examKnowledge));
+      return matchesSubject && matchesTopic && (collection === "all" || (collection === "booklet" ? Boolean(formula.booklet) : Boolean(formula.examKnowledge)));
     });
-  }, [selectedSubject, selectedTopic, examOnly]);
+  }, [selectedSubject, selectedTopic, collection]);
 
   // Fuzzy search only within filtered formulas
   const fuse = useMemo(
@@ -321,9 +323,9 @@ function App() {
       { label: "Favorites", items: resolve(favoriteIds) },
       // Favorites already appear above; retain them in stored history.
       { label: "Recents", items: resolve(recentIds.filter((id) => !favoriteSet.has(id))) },
-      { label: examOnly ? "Exam extras" : selectedTopic === "All" ? "All formulae" : selectedTopic, items: isDesktop && selectedTopic === "All" && !examOnly ? [] : filteredFormulas.filter((item) => !savedIds.has(item.id)).sort((a, b) => examOnly ? compareExamFormulae(a, b) : 0) },
+      { label: collection !== "all" ? collectionLabel : selectedTopic === "All" ? "All formulae" : selectedTopic, items: isDesktop && selectedTopic === "All" && collection === "all" ? [] : filteredFormulas.filter((item) => !savedIds.has(item.id)).sort((a, b) => collection !== "all" ? compareExamFormulae(a, b) : 0) },
     ].filter((section) => section.items.length > 0);
-  }, [isSearching, query, fuse, filteredFormulas, favoriteIds, recentIds, favoriteSet, selectedTopic, examOnly]);
+  }, [isSearching, query, fuse, filteredFormulas, favoriteIds, recentIds, favoriteSet, selectedTopic, collection, collectionLabel]);
   const matchingResults = useMemo(() => sections.flatMap((section) => section.items), [sections]);
   const visibleResults = useMemo(() => isDesktop ? matchingResults : matchingResults.slice(0, browserLimit), [matchingResults, browserLimit]);
 
@@ -356,7 +358,7 @@ function App() {
     query,
     selectedSubject,
     selectedTopic,
-    examOnly,
+    collection,
   ]);
 
   // Keep selected index valid
@@ -584,15 +586,16 @@ function App() {
             />
 
             <div className="library-scope" aria-label="Formula collection">
-              <button aria-pressed={!examOnly} onClick={() => setExamOnly(false)}>All formulae</button>
-              <button aria-pressed={examOnly} onClick={() => {
-                setExamOnly(true);
-                if (selectedSubject === "Physics") {
-                  setSelectedSubject("All");
-                  setSelectedTopic("All");
-                }
-              }}>Exam extras</button>
-              {examOnly && <span>Beyond the printed formulae</span>}
+              {([['all', 'All formulae'], ['booklet', 'Formula booklet'], ['extras', 'Exam extras']] as const).map(([value, label]) =>
+                <button key={value} aria-pressed={collection === value} onClick={() => {
+                  setCollection(value);
+                  if (value !== "all" && selectedSubject === "Physics") {
+                    setSelectedSubject("All");
+                    setSelectedTopic("All");
+                  }
+                }}>{label}</button>
+              )}
+              {collection !== "all" && <span>{collection === "booklet" ? "Provided in the IAL maths booklet" : "Beyond the printed formulae"}</span>}
             </div>
 
             {!isDesktop && <div className="browser-filters">
@@ -716,6 +719,20 @@ function App() {
                           <p>{item.notes}</p>
                         </div>
                       )}
+                      {item.booklet && <div className="formula-provenance">
+                        <h3>Formula booklet · page {item.booklet.page}</h3>
+                        <p>Printed in Pearson’s IAL Mathematics Formula Book (Issue 2, 2021).</p>
+                        <a href={`${PEARSON_FORMULA_BOOK}#page=${item.booklet.page + 6}`} target="_blank" rel="noreferrer" onClick={event => {
+                          event.stopPropagation();
+                          if (isDesktop) {
+                            event.preventDefault();
+                            void openUrl(`${PEARSON_FORMULA_BOOK}#page=${item.booklet!.page + 6}`).catch(error => {
+                              console.error("Could not open formula booklet:", error);
+                              setCopyError("Could not open the source. Please try again.");
+                            });
+                          }
+                        }}>Open the official formula booklet</a>
+                      </div>}
                       {item.examKnowledge && <div className="formula-provenance">
                         <h3>Exam extra · {item.examKnowledge.section}</h3>
                         <p>{item.examKnowledge.status === "derived-not-printed"
@@ -744,8 +761,12 @@ function App() {
               {visibleResults.length ===
                 0 && (
                 <p className="empty">
-                  {selectedSubject === "Further Mathematics" && selectedTopic === "Decision 1"
+                  {collection === "booklet" && selectedTopic === "Mechanics 1"
+                    ? "No dedicated M1 formulae are printed in the booklet. M1 can also use the supplied Pure 1 and Pure 2 formulae."
+                    : selectedSubject === "Further Mathematics" && selectedTopic === "Decision 1"
                     ? "Pearson’s formula booklet lists no required formulae for Decision Mathematics D1."
+                    : collection !== "all"
+                    ? `No ${collectionLabel.toLowerCase()} formulae match. Change your search or filters.`
                     : isSearching
                     ? "No formulas found."
                     : favoriteIds.length || recentIds.length

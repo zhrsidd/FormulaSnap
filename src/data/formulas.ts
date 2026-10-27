@@ -17,6 +17,7 @@ export type Formula = {
   aliases: string[];
   variables: FormulaVariable[];
   notes?: string;
+  booklet?: { page: number };
   examKnowledge?: {
     section: string;
     status: "derived-not-printed" | "derived-from-printed-equation";

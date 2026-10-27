@@ -15,10 +15,11 @@ variables, domain conditions and page references in Notes.
 | Further Mathematics / Further Pure 2 | 12 | 7 | Polar area, complex numbers, roots of unity, Maclaurin and Taylor series |
 | Further Mathematics / Further Pure 3 | 53 | 8–11 | Vectors, hyperbolic functions, conics, derivatives, integrals, arc lengths and surfaces of revolution |
 | Maths / Mechanics 2 | 3 | 13 | Centres of mass of triangular lamina, arc and sector |
+| Maths / Mechanics 3 | 8 | 13 | Circular kinematics, uniform-solid/shell centres of mass, gravitation |
 | Maths / Statistics 1 | 15 | 14–17 | Probability, distributions, expectations, variance, correlation, regression, normal CDF and upper-tail definition |
 | Maths / Statistics 2 | 10 | 18 | Binomial/Poisson probabilities and moments, continuous expectations/variance/CDF, uniform distribution |
 | Maths / Statistics 3 | 8 | 25 | Independence, sampling distributions, unbiased estimators, rank correlation, chi-squared statistic |
-| **Total** | **146** | | |
+| **Total** | **154** | | |
 
 Equivalent forms share a card or refer to component cards: for example, PMCC
 uses the separate S_xx, S_yy and S_xy definitions. Series are sometimes expressed
@@ -29,7 +30,7 @@ remain in Further Pure 1 rather than being duplicated.
 
 Decision 1 appears under Further Mathematics with an explanation: the source
 explicitly supplies no required D1 formulae (p. 1). No outside-source D1
-relationships have been invented. M3 is omitted. Numerical normal, binomial,
+relationships have been invented. Numerical normal, binomial,
 Poisson, chi-squared and correlation tables, and the random-number dataset,
 are excluded. Distribution definitions and symbolic formulae are retained.
 
@@ -37,3 +38,19 @@ Layout validation uses the same card CSS and equation component as the app.
 All new equations are measured at desktop and narrow widths; long identities
 use aligned rows, and responsive font sizing preserves a 12 px minimum with
 horizontal scrolling as a fallback for exceptionally narrow windows.
+
+## Formula booklet collection
+
+The **Formula booklet** filter selects cards with explicit `booklet.page`
+metadata. It includes only equations supplied in the matching IAL maths
+booklet, with a link to the printed page (PDF page = printed page + 6).
+It is not an inference from the card name, an ID prefix or a topic. The new
+M3 coverage adds eight supplied equation cards; the existing saved IDs are
+unchanged. Definitions, equivalent forms and shared formulae retain the
+card grouping described above. Numerical lookup tables remain excluded.
+The collection is specific to the IAL maths booklet; it does not tag Physics
+cards as supplied by a different paper's formula sheet.
+
+M1 has no dedicated supplied formulae; the empty M1 collection explains that
+P1/P2 formulae may also be used in M1. Being in the booklet does not mean a
+formula is absent from the specification, or remove a need to understand it.

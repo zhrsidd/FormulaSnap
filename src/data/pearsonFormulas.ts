@@ -8,6 +8,7 @@ const L = String.raw;
 function group(topic: string, page: number, further = false) {
   return (id: string, name: string, formula: string, latex: string, variables: Record<string, string>, notes = "") => {
     pearsonFormulas.push({
+      booklet: { page },
       id: `pearson-${id}`, name, subject: further ? "Further Mathematics" : "Maths", topic,
       formula, latex, aliases: [name.toLowerCase(), id.replace(/-/g, " "), topic, topic.replace("Further Pure ", "FP"), topic.replace("Further Pure ", "FPM")],
       variables: Object.entries(variables).map(([symbol, name]) => ({ symbol, name })),
@@ -158,6 +159,16 @@ const m2 = group("Mechanics 2", 13);
 m2("m2-triangle-com", "Centre of Mass: Triangular Lamina", "distance from vertex along median = 2l/3", L`d=\frac23l`, { d: "distance from vertex to centre of mass", l: "length of that median" }, "Uniform triangular lamina; measure along the median from the vertex.");
 m2("m2-arc-com", "Centre of Mass: Circular Arc", "d = r sin α / α", L`d=\frac{r\sin\alpha}{\alpha}`, { d: "distance from circle centre along the symmetry axis", r: "arc radius", α: "half the angle subtended at the centre, in radians" }, "Uniform circular arc with central angle 2α; use consistent length units.");
 m2("m2-sector-com", "Centre of Mass: Circular Sector", "d = 2r sin α / (3α)", L`d=\frac{2r\sin\alpha}{3\alpha}`, { d: "distance from circle centre along the symmetry axis", r: "sector radius", α: "half the sector angle, in radians" }, "Uniform sector lamina with central angle 2α.");
+
+const m3 = group("Mechanics 3", 13);
+m3("m3-transverse-velocity", "Circular Motion: Transverse Velocity", "v = rω = r(dθ/dt)", L`v=r\dot\theta=r\omega`, { v: "transverse velocity", r: "fixed circle radius", θ: "angle in radians", ω: "angular velocity dθ/dt" }, "Motion on a circle of fixed radius; use a consistent positive angular direction.");
+m3("m3-transverse-acceleration", "Circular Motion: Transverse Acceleration", "a_t = dv/dt = r(d²θ/dt²)", L`a_t=\dot v=r\ddot\theta`, { a_t: "transverse acceleration", r: "fixed circle radius", θ: "angle in radians", v: "transverse velocity" }, "The tangential component for a fixed circle radius; it is not the inward radial component.");
+m3("m3-radial-acceleration", "Circular Motion: Radial Acceleration", "a_r = −rω² = −v²/r", L`a_r=-r\dot\theta^2=-\frac{v^2}{r}`, { a_r: "radial acceleration, outward taken positive", r: "positive circle radius", v: "speed", θ: "angle in radians" }, "The minus sign indicates acceleration towards the centre. Inward magnitude is v²/r.");
+m3("m3-solid-hemisphere", "Centre of Mass: Solid Hemisphere", "d = 3r/8", L`d=\frac38r`, { d: "distance from sphere centre towards the curved body", r: "sphere radius" }, "Uniform solid hemisphere; the centre of mass lies on its symmetry axis, measured from the centre of the flat circular face.");
+m3("m3-hemisphere-shell", "Centre of Mass: Hemispherical Shell", "d = r/2", L`d=\frac12r`, { d: "distance from sphere centre along symmetry axis", r: "sphere radius" }, "Uniform thin hemispherical shell, excluding a flat base; measure towards the curved shell.");
+m3("m3-solid-cone-pyramid", "Centre of Mass: Solid Cone or Pyramid", "d = h/4 above the base", L`d=\frac14h`, { d: "distance above base along the base-centre-to-vertex line", h: "height" }, "Uniform solid cone or pyramid. This is measured from the base, not from the vertex.");
+m3("m3-conical-shell", "Centre of Mass: Conical Shell", "d = h/3 above the base", L`d=\frac13h`, { d: "distance above base on symmetry axis", h: "cone height" }, "Uniform thin conical shell, excluding the circular base; measured from the base towards the vertex.");
+m3("m3-gravitation", "Universal Law of Gravitation", "F = Gm₁m₂/d²", L`F=\frac{Gm_1m_2}{d^2}`, { F: "attractive force magnitude", G: "universal gravitational constant", "m₁, m₂": "masses", d: "positive distance between mass centres" }, "Point masses, or spherically symmetric bodies treated externally as point masses at their centres.");
 
 const s1 = group("Statistics 1", 14);
 s1("s1-union", "Addition Rule for Probability", "P(A ∪ B) = P(A) + P(B) − P(A ∩ B)", L`P(A\cup B)=P(A)+P(B)-P(A\cap B)`, { A: "first event", B: "second event" });

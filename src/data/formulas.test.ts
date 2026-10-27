@@ -27,12 +27,13 @@ describe("formula library", () => {
     }
   });
   it("routes the booklet's further-pure modules separately and excludes data tables", () => {
-    expect(pearsonFormulas.length).toBe(146);
+    expect(pearsonFormulas.length).toBe(154);
     for (const formula of pearsonFormulas) {
       expect(formula.subject).toBe(formula.topic.startsWith("Further Pure ") ? "Further Mathematics" : "Maths");
       expect(formula.variables.length).toBeGreaterThan(0);
       expect(formula.notes).toMatch(/Pearson IAL Mathematics Formula Book, p\. \d+\./);
-      expect(formula.topic).not.toBe("Mechanics 3");
+      expect(formula.booklet?.page).toBeGreaterThanOrEqual(3);
+      expect(formula.examKnowledge).toBeUndefined();
       expect(formula.name).not.toMatch(/critical values|random numbers|distribution table/i);
     }
     expect(pearsonFormulas.some(f => f.topic === "Pure 4")).toBe(true);
