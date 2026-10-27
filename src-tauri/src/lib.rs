@@ -1,6 +1,7 @@
 use std::sync::Mutex;
 use tauri::Manager;
 use tauri_plugin_global_shortcut::ShortcutState;
+mod appearance;
 mod shortcuts;
 use tauri::Emitter;
 
@@ -38,33 +39,16 @@ pub fn run() {
         )
         .invoke_handler(tauri::generate_handler![
             set_always_on_top,
+            appearance::set_backdrop_blur,
             shortcuts::get_shortcut,
             shortcuts::set_shortcut
         ])
         .setup(move |app| {
-            // Glass lenses content inside its window. Put an actual behind-window
-            // material beneath it so the desktop is sampled too (not a white void).
+            // Apply the approved Frosted shell at 9px until the frontend restores
+            // the user's saved preference. No fixed-radius lens above the blur.
             #[cfg(target_os = "macos")]
             if let Some(window) = app.get_webview_window("main") {
-                use window_vibrancy::{
-                    apply_liquid_glass, apply_vibrancy, LiquidGlassOptions, NSGlassEffectViewStyle,
-                    NSVisualEffectMaterial, NSVisualEffectState,
-                };
-                match apply_liquid_glass(
-                    &window,
-                    LiquidGlassOptions::new(NSGlassEffectViewStyle::Clear).radius(24.0),
-                ) {
-                    Ok(()) | Err(window_vibrancy::Error::UnsupportedPlatformVersion(_)) => {}
-                    Err(error) => eprintln!("Could not apply Liquid Glass: {error}"),
-                }
-                // Inserts BELOW the glass. On macOS 15 and earlier this is the
-                // only material, providing the native vibrancy fallback.
-                if let Err(error) = apply_vibrancy(
-                    &window,
-                    NSVisualEffectMaterial::HudWindow,
-                    Some(NSVisualEffectState::Active),
-                    Some(24.0),
-                ) {
+                if let Err(error) = appearance::apply(&window, 9, false) {
                     eprintln!("Could not apply window backdrop: {error}");
                 }
             }

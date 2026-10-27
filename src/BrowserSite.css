@@ -48,7 +48,7 @@ html.browser-document body {
 .hero-preview figcaption { padding: 15px 17px; font-size: 10px; color: #97a8c0; }
 .library-section { background: #101a2855; border-block: 1px solid #ffffff10; padding-block: 46px 40px; }
 .browser-site .browser-app { width: 100%; max-width: none; height: auto; min-height: 540px; margin: 0; overflow: visible; }
-.browser-site .browser-app .panel { padding: 0; background: transparent; border: 0; box-shadow: none; border-radius: 0; overflow: visible; height: auto; }
+.browser-site .browser-app .panel { padding: 20px; background: linear-gradient(145deg, #ffffff1d, transparent 42%), rgb(12 19 30 / .42); border: 1px solid #ffffff61; box-shadow: inset 0 1px 0 #ffffff70, inset 0 -1px 0 #ffffff18; border-radius: 26px; overflow: visible; height: auto; }
 .browser-site .browser-app .heading-row { margin: 0 0 6px; }
 .browser-site .browser-app .heading-row h2 { margin: 0; font-size: 26px; letter-spacing: -.8px; font-weight: 600; }
 .browser-site .subtitle { font-size: 12px; margin-top: 8px; color: var(--site-muted); }
@@ -133,6 +133,7 @@ html.browser-document body {
 .browser-site .formula-provenance a { text-decoration: underline; }
 .browser-site .panel.reduce-transparency { background: #172436; padding: 20px; border-radius: 24px; }
 @media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+  .browser-site .browser-app .panel { background: #202c3d; backdrop-filter: none; -webkit-backdrop-filter: none; }
   .browser-site .formula-card { background: #202f44; border-color: #718199; }
   .browser-site .search { background: #24344b; }
 }

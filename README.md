@@ -163,8 +163,9 @@ not an official list of formulae that must be memorised.
 on a phone or desktop. The demo compares proposed treatments; it does not
 change the installed app’s appearance.
 
-On macOS 26 and later, the desktop app uses native clear Liquid Glass above a
-native desktop-blurring material. Earlier macOS versions use native vibrancy.
+The desktop app uses the selected Frosted shell with 9px background blur by
+default. Settings lets you adjust it live from 0–40px, save it, or reset to 9px.
+Unsupported macOS versions fall back to system-managed vibrancy.
 The web demo uses translucent CSS surfaces. Settings includes **Reduce
 transparency**, and reduced-motion, reduced-transparency and increased-contrast
 preferences have visual fallbacks. See [design and verification](docs/liquid-glass.md).

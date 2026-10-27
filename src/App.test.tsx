@@ -85,6 +85,36 @@ it("persists the readability setting without changing collection preferences", (
   expect(document.querySelector(".panel.reduce-transparency")).toBeTruthy();
 });
 
+it("starts Frosted shell at 9px, applies blur live, persists it, and restores the default", () => {
+  const { unmount } = render(<App />);
+  fireEvent.click(screen.getByRole("button", { name: "Open Settings" }));
+  const slider = screen.getByRole("slider", { name: "Background blur" }) as HTMLInputElement;
+  expect(slider.value).toBe("9");
+  fireEvent.change(slider, { target: { value: "21" } });
+  expect(document.querySelector<HTMLElement>(".panel")?.style.getPropertyValue("--background-blur")).toBe("21px");
+  expect(localStorage.getItem("formulasnap-background-blur")).toBe("21");
+  fireEvent.click(screen.getByRole("checkbox", { name: "Reduce transparency" }));
+  expect(slider.disabled).toBe(true);
+  unmount();
+  render(<App />);
+  fireEvent.click(screen.getByRole("button", { name: "Open Settings" }));
+  expect((screen.getByRole("slider") as HTMLInputElement).value).toBe("21");
+  fireEvent.click(screen.getByRole("checkbox", { name: "Reduce transparency" }));
+  expect((screen.getByRole("slider") as HTMLInputElement).disabled).toBe(false);
+  fireEvent.click(screen.getByRole("button", { name: "Reset to 9px" }));
+  expect(localStorage.getItem("formulasnap-background-blur")).toBe("9");
+});
+
+it.each([["garbage", "9"], ["Infinity", "9"], ["", "9"], ["-4", "0"], ["100", "40"]])(
+  "handles an invalid saved blur of %s without breaking search", (saved, expected) => {
+    localStorage.setItem("formulasnap-background-blur", saved);
+    render(<App />);
+    expect(screen.getAllByRole("group").length).toBeGreaterThan(0);
+    fireEvent.click(screen.getByRole("button", { name: "Open Settings" }));
+    expect((screen.getByRole("slider") as HTMLInputElement).value).toBe(expected);
+  }
+);
+
 
 it("limits Formula booklet to supplied equations, opens its printed page, and excludes exam extras", () => {
   render(<App />);

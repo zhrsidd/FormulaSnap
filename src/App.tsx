@@ -1,6 +1,7 @@
 import Fuse from "fuse.js";
 import {
   Fragment,
+  type CSSProperties,
   useCallback,
   useEffect,
   useMemo,
@@ -36,6 +37,17 @@ const isDesktop = isTauri();
 const FAVORITES_KEY = "formulasnap-favorites";
 const RECENTS_KEY = "formulasnap-recents";
 const RECENTS_LIMIT = 10;
+const BLUR_KEY = "formulasnap-background-blur";
+const DEFAULT_BLUR = 9;
+function readBlur(): number {
+  try {
+    const saved = localStorage.getItem(BLUR_KEY);
+    const value = saved === null || saved.trim() === "" ? NaN : Number(saved);
+    return Number.isFinite(value) ? Math.max(0, Math.min(40, Math.round(value))) : DEFAULT_BLUR;
+  } catch {
+    return DEFAULT_BLUR;
+  }
+}
 const knownIds = new Set(formulas.map((formula) => formula.id));
 
 function readIds(key: string, limit = Infinity): string[] {
@@ -65,6 +77,30 @@ function App() {
   const [reduceTransparency, setReduceTransparency] = useState(() =>
     localStorage.getItem("formulasnap-reduce-transparency") === "true"
   );
+  const [backgroundBlur, setBackgroundBlur] = useState(readBlur);
+  const [blurStatus, setBlurStatus] = useState("");
+  const [systemReduceTransparency, setSystemReduceTransparency] = useState(false);
+  useEffect(() => {
+    try { localStorage.setItem(BLUR_KEY, String(backgroundBlur)); } catch { /* Keep this session usable. */ }
+    if (!isDesktop) return;
+    let active = true;
+    const media = window.matchMedia("(prefers-reduced-transparency: reduce), (prefers-contrast: more)");
+    const apply = () => invoke<string>("set_backdrop_blur", {
+      radius: backgroundBlur, reduceTransparency: reduceTransparency || media.matches,
+    }).then(mode => {
+      if (active) {
+        setSystemReduceTransparency(mode === "reduced" && !reduceTransparency);
+        setBlurStatus(mode === "system" ? "This macOS version uses system-managed blur." :
+          mode === "reduced" ? "Transparency is reduced by your reading or macOS accessibility settings." : "");
+      }
+    }).catch(error => {
+      console.error("Could not change the backdrop blur:", error);
+      if (active) setBlurStatus("Could not apply the blur. Try adjusting it again.");
+    });
+    void apply();
+    media.addEventListener("change", apply);
+    return () => { active = false; media.removeEventListener("change", apply); };
+  }, [backgroundBlur, reduceTransparency]);
   useEffect(() => {
     localStorage.setItem("formulasnap-reduce-transparency", String(reduceTransparency));
   }, [reduceTransparency]);
@@ -505,7 +541,8 @@ function App() {
 
   return (
     <main className={isDesktop ? "app" : "app browser-app"}>
-      <div className={`panel${reduceTransparency ? " reduce-transparency" : ""}`}>
+      <div className={`panel${reduceTransparency || systemReduceTransparency ? " reduce-transparency" : ""}`}
+        style={{ "--background-blur": `${backgroundBlur}px` } as CSSProperties}>
         {/* Custom titlebar */}
         {isDesktop && <div
           className="titlebar"
@@ -815,6 +852,22 @@ function App() {
             {/* Search Scope */}
             <div className="settings-section-label">
               Appearance
+            </div>
+
+            <div className="setting-row blur-setting">
+              <div className="blur-heading">
+                <label htmlFor="background-blur"><strong>Background blur</strong></label>
+                <output htmlFor="background-blur">{backgroundBlur}px</output>
+              </div>
+              <p id="background-blur-help">Frosted shell · 9px by default</p>
+              <input id="background-blur" type="range" min="0" max="40" step="1"
+                value={backgroundBlur} disabled={reduceTransparency || systemReduceTransparency}
+                aria-describedby="background-blur-help"
+                onChange={event => setBackgroundBlur(Number(event.target.value))} />
+              <div className="blur-scale"><span>Clear</span>
+                <button type="button" disabled={backgroundBlur === DEFAULT_BLUR}
+                  onClick={() => setBackgroundBlur(DEFAULT_BLUR)}>Reset to 9px</button><span>Frosted</span></div>
+              {blurStatus && <p role="status">{blurStatus}</p>}
             </div>
 
             <div className="setting-row">
