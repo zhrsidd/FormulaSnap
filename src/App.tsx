@@ -12,6 +12,8 @@ import { FormulaEquation } from "./components/FormulaEquation";
 import { listen } from "@tauri-apps/api/event";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { invoke, isTauri } from "@tauri-apps/api/core";
+import { openUrl } from "@tauri-apps/plugin-opener";
+import { compareExamFormulae, IAL_SPECIFICATION } from "./data/examFormulae";
 
 import "katex/dist/katex.min.css";
 import "./App.css";
@@ -57,6 +59,13 @@ function saveIds(key: string, ids: string[]) {
 
 function App() {
   const [showSettings, setShowSettings] = useState(false);
+  const [examOnly, setExamOnly] = useState(false);
+  const [reduceTransparency, setReduceTransparency] = useState(() =>
+    localStorage.getItem("formulasnap-reduce-transparency") === "true"
+  );
+  useEffect(() => {
+    localStorage.setItem("formulasnap-reduce-transparency", String(reduceTransparency));
+  }, [reduceTransparency]);
   const [browserLimit, setBrowserLimit] = useState(24);
   const [query, setQuery] = useState("");
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -244,9 +253,9 @@ function App() {
         selectedTopic === "All" ||
         formula.topic === selectedTopic;
 
-      return matchesSubject && matchesTopic;
+      return matchesSubject && matchesTopic && (!examOnly || Boolean(formula.examKnowledge));
     });
-  }, [selectedSubject, selectedTopic]);
+  }, [selectedSubject, selectedTopic, examOnly]);
 
   // Fuzzy search only within filtered formulas
   const fuse = useMemo(
@@ -312,9 +321,9 @@ function App() {
       { label: "Favorites", items: resolve(favoriteIds) },
       // Favorites already appear above; retain them in stored history.
       { label: "Recents", items: resolve(recentIds.filter((id) => !favoriteSet.has(id))) },
-      { label: selectedTopic === "All" ? "All formulae" : selectedTopic, items: isDesktop && selectedTopic === "All" ? [] : filteredFormulas.filter((item) => !savedIds.has(item.id)) },
+      { label: examOnly ? "Exam extras" : selectedTopic === "All" ? "All formulae" : selectedTopic, items: isDesktop && selectedTopic === "All" && !examOnly ? [] : filteredFormulas.filter((item) => !savedIds.has(item.id)).sort((a, b) => examOnly ? compareExamFormulae(a, b) : 0) },
     ].filter((section) => section.items.length > 0);
-  }, [isSearching, query, fuse, filteredFormulas, favoriteIds, recentIds, favoriteSet, selectedTopic]);
+  }, [isSearching, query, fuse, filteredFormulas, favoriteIds, recentIds, favoriteSet, selectedTopic, examOnly]);
   const matchingResults = useMemo(() => sections.flatMap((section) => section.items), [sections]);
   const visibleResults = useMemo(() => isDesktop ? matchingResults : matchingResults.slice(0, browserLimit), [matchingResults, browserLimit]);
 
@@ -347,6 +356,7 @@ function App() {
     query,
     selectedSubject,
     selectedTopic,
+    examOnly,
   ]);
 
   // Keep selected index valid
@@ -410,7 +420,7 @@ function App() {
         if (!isDesktop && target instanceof HTMLInputElement) return;
         // Preserve native Space activation for buttons and settings controls.
         if (target instanceof HTMLElement &&
-            target.closest("button, select, textarea, [contenteditable='true']")) {
+            target.closest("button, a, select, textarea, [contenteditable='true']")) {
           return;
         }
         const selected = visibleResults[selectedIndex];
@@ -425,7 +435,7 @@ function App() {
 
       // Let focused controls retain native keyboard activation.
       if (event.target instanceof HTMLElement &&
-          event.target.closest("button, select, textarea, [contenteditable='true']")) {
+          event.target.closest("button, a, select, textarea, [contenteditable='true']")) {
         return;
       }
       if (event.isComposing) return;
@@ -493,7 +503,7 @@ function App() {
 
   return (
     <main className={isDesktop ? "app" : "app browser-app"}>
-      <div className="panel">
+      <div className={`panel${reduceTransparency ? " reduce-transparency" : ""}`}>
         {/* Custom titlebar */}
         {isDesktop && <div
           className="titlebar"
@@ -572,6 +582,18 @@ function App() {
               }
               autoFocus={isDesktop}
             />
+
+            <div className="library-scope" aria-label="Formula collection">
+              <button aria-pressed={!examOnly} onClick={() => setExamOnly(false)}>All formulae</button>
+              <button aria-pressed={examOnly} onClick={() => {
+                setExamOnly(true);
+                if (selectedSubject === "Physics") {
+                  setSelectedSubject("All");
+                  setSelectedTopic("All");
+                }
+              }}>Exam extras</button>
+              {examOnly && <span>Beyond the printed formulae</span>}
+            </div>
 
             {!isDesktop && <div className="browser-filters">
               <label>Subject<select value={selectedSubject} onChange={event => { setSelectedSubject(event.target.value as SubjectFilter); setSelectedTopic("All"); }}>
@@ -694,6 +716,22 @@ function App() {
                           <p>{item.notes}</p>
                         </div>
                       )}
+                      {item.examKnowledge && <div className="formula-provenance">
+                        <h3>Exam extra · {item.examKnowledge.section}</h3>
+                        <p>{item.examKnowledge.status === "derived-not-printed"
+                          ? "Working relationship for a syllabus skill; not printed as an equation in the IAL booklet or specification."
+                          : "Derived aid built from an equation printed in the specification."}</p>
+                        <a href={IAL_SPECIFICATION} target="_blank" rel="noreferrer" onClick={event => {
+                          event.stopPropagation();
+                          if (isDesktop) {
+                            event.preventDefault();
+                            void openUrl(IAL_SPECIFICATION).catch(error => {
+                              console.error("Could not open specification:", error);
+                              setCopyError("Could not open the source. Please try again.");
+                            });
+                          }
+                        }}>Pearson IAL specification (2018 course)</a>
+                      </div>}
                       {!item.variables?.length && !item.notes && (
                         <p className="details-empty">No additional details available.</p>
                       )}
@@ -755,8 +793,19 @@ function App() {
 
             {/* Search Scope */}
             <div className="settings-section-label">
-              Search Scope
+              Appearance
             </div>
+
+            <div className="setting-row">
+              <div><strong>Reduce transparency</strong><p>A more solid surface for easier reading</p></div>
+              <label className="switch">
+                <input type="checkbox" aria-label="Reduce transparency" checked={reduceTransparency}
+                  onChange={event => setReduceTransparency(event.target.checked)} />
+                <span className="slider" />
+              </label>
+            </div>
+
+            <div className="settings-section-label">Search Scope</div>
 
             {/* Subject */}
             <div className="setting-row">

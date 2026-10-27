@@ -136,6 +136,7 @@ FormulaSnap contains formulas covering Edexcel International A Level Mathematics
 - Pure Mathematics 4
 - Mechanics 1
 - Mechanics 2
+- Mechanics 3 (exam extras)
 - Statistics 1
 - Statistics 2
 - Statistics 3
@@ -146,6 +147,23 @@ FormulaSnap contains formulas covering Edexcel International A Level Mathematics
 - Decision 1: the Pearson booklet supplies no required formulae; the topic explains this
 
 The library includes 146 additional equation cards from the [Pearson formula booklet](https://qualifications.pearson.com/content/dam/pdf/International%20Advanced%20Level/Mathematics/2018/Specification-and-Sample-Assessment/IAL-Mathematics-Formula-Book.pdf), with printed page references in Notes. See [coverage and exclusions](docs/pearson-formula-coverage.md). Numerical lookup tables and M3 are excluded from this expansion.
+
+The **Exam extras** collection adds 100 cards for syllabus skills whose working
+equations are not supplied, and annotates 13 existing M1 cards without changing
+their saved IDs. The [sorted research list](docs/exam-formulae.md) separates 111
+relationships absent as complete equations from both the matching booklet and
+specification from two related derivations of printed equations. Each card has
+its syllabus section, variables and model restrictions. The audit covers the
+2018 IAL P1–P4, FP1–FP3, M1–M3 and S1–S3 course; it is a curated study aid,
+not an official list of formulae that must be memorised.
+
+### Glass appearance
+
+On macOS 26 and later, the desktop app uses native clear Liquid Glass above a
+native desktop-blurring material. Earlier macOS versions use native vibrancy.
+The web demo uses translucent CSS surfaces. Settings includes **Reduce
+transparency**, and reduced-motion, reduced-transparency and increased-contrast
+preferences have visual fallbacks. See [design and verification](docs/liquid-glass.md).
 
 Formula entries can include:
 

@@ -56,3 +56,31 @@ it("browses the web library in pages without stealing initial focus", () => {
   expect(screen.getAllByRole("group")).toHaveLength(24);
   expect(screen.getByRole("combobox", { name: "Topic" })).toBeTruthy();
 });
+
+it("filters exam extras, shows provenance, and keeps favorites across collections", () => {
+  render(<App />);
+  fireEvent.click(screen.getByRole("button", { name: "Exam extras" }));
+  fireEvent.change(screen.getByRole("textbox"), { target: { value: "projectile range" } });
+  expect(screen.getByRole("group", { name: "Projectile Range on Level Ground" })).toBeTruthy();
+  expect(screen.queryByRole("group", { name: "SUVAT — Final Velocity" })).toBeNull();
+  fireEvent.click(screen.getByRole("button", { name: "Expand Projectile Range on Level Ground" }));
+  expect(screen.getByRole("link", { name: /Pearson IAL specification/ }).getAttribute("href")).toContain("Mathematics/2018/");
+  expect(fireEvent.keyDown(screen.getByRole("link", { name: /Pearson IAL specification/ }), { key: "Enter" })).toBe(true);
+  expect(screen.getByText(/equal launch and landing heights/)).toBeTruthy();
+  fireEvent.click(screen.getByRole("button", { name: "Add Projectile Range on Level Ground to favorites" }));
+  fireEvent.change(screen.getByRole("textbox"), { target: { value: "" } });
+  expect(screen.getByRole("heading", { name: "Favorites" })).toBeTruthy();
+  fireEvent.click(screen.getByRole("button", { name: "All formulae" }));
+  expect(screen.getByRole("button", { name: "Remove Projectile Range on Level Ground from favorites" })).toBeTruthy();
+});
+
+it("persists the readability setting without changing collection preferences", () => {
+  const { unmount } = render(<App />);
+  fireEvent.click(screen.getByRole("button", { name: "Open Settings" }));
+  fireEvent.click(screen.getByRole("checkbox", { name: "Reduce transparency" }));
+  expect(localStorage.getItem("formulasnap-reduce-transparency")).toBe("true");
+  expect(document.querySelector(".panel.reduce-transparency")).toBeTruthy();
+  unmount();
+  render(<App />);
+  expect(document.querySelector(".panel.reduce-transparency")).toBeTruthy();
+});

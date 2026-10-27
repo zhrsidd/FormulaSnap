@@ -1,4 +1,5 @@
 import { pearsonFormulas } from "./pearsonFormulas";
+import { examFormulae, existingExamKnowledge } from "./examFormulae";
 
 export type FormulaVariable = {
   symbol: string;
@@ -16,9 +17,13 @@ export type Formula = {
   aliases: string[];
   variables: FormulaVariable[];
   notes?: string;
+  examKnowledge?: {
+    section: string;
+    status: "derived-not-printed" | "derived-from-printed-equation";
+  };
 };
 
-export const formulas: Formula[] = [
+export const formulas: Formula[] = ([
 
   // PHYSICS — GENERAL: common relationships beyond the formula sheet
 
@@ -3942,4 +3947,8 @@ export const formulas: Formula[] = [
     ],
   },
   ...pearsonFormulas,
-];
+  ...examFormulae,
+] satisfies Formula[]).map((formula) => {
+  const knowledge = existingExamKnowledge[formula.id];
+  return knowledge ? { ...formula, examKnowledge: knowledge } : formula;
+});

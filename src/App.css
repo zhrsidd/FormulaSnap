@@ -12,8 +12,14 @@ body,
   overflow: hidden;
 }
 
+/* Keep native focus/AX scrolling inside the results, not the whole webview. */
+html:not(.browser-document),
+html:not(.browser-document) body,
+html:not(.browser-document) #root { height: 100%; }
+html:not(.browser-document) body { position: fixed; inset: 0; }
+
 body {
-  font-family: Inter, system-ui, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   color: white;
 }
 
@@ -42,11 +48,15 @@ input {
   border-radius: 24px;
   overflow: hidden;
 
-  /* Stable background */
-  background: rgb(58, 62, 69);
-
-  border: none;
-  box-shadow: none;
+  /* The native NSGlassEffectView samples the desktop underneath this tint. */
+  background:
+    linear-gradient(145deg, rgb(255 255 255 / 0.11), transparent 34%, rgb(177 210 255 / 0.035)),
+    rgb(12 19 30 / 0.42);
+  border: 1px solid rgb(255 255 255 / 0.30);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.32),
+    inset 0 -1px 0 rgb(255 255 255 / 0.07);
+  color: #f7f9ff;
 }
 
 h1 {
@@ -57,7 +67,7 @@ h1 {
 
 .subtitle {
   margin: 4px 0 0;
-  color: #9ca3af;
+  color: #c3ccda;
   font-size: 13px;
 }
 
@@ -72,11 +82,11 @@ h1 {
   border-radius: 16px;
   border: 1px solid rgba(255, 255, 255, 0.12);
 
-  background: rgba(255, 255, 255, 0.08);
+  background: rgb(255 255 255 / 0.065);
   color: white;
 
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
+  backdrop-filter: blur(10px) saturate(135%);
+  -webkit-backdrop-filter: blur(10px) saturate(135%);
 
   outline: none;
   font-size: 17px;
@@ -89,7 +99,7 @@ background 0.2s ease,
 
 .search:focus {
   background: rgba(255, 255, 255, 0.12);
-  border-color: #6b7280;
+  border-color: #b1bed0;
 
   box-shadow:
     0 0 0 3px rgba(255, 255, 255, 0.04),
@@ -97,7 +107,7 @@ background 0.2s ease,
 }
 
 .search::placeholder {
-  color: rgba(255, 255, 255, 0.45);
+  color: #c2cad6;
 }
 
 /* Results */
@@ -129,7 +139,7 @@ background 0.2s ease,
   border-radius: 16px;
   border: 1px solid rgba(255, 255, 255, 0.08);
 
-  background: rgba(255, 255, 255, 0.055);
+  background: rgb(255 255 255 / 0.035);
 
   transition:
 background 0.15s ease,
@@ -138,8 +148,9 @@ background 0.15s ease,
 }
 
 .formula-card.selected {
-  border-color: #6b7280;
-  background: #20242c;
+  border-color: rgb(190 218 255 / 0.55);
+  background: rgb(166 205 255 / 0.12);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.13);
 }
 
 .formula-card h2 {
@@ -164,7 +175,7 @@ background 0.15s ease,
   display: block;
   margin-bottom: 6px;
 
-  color: #9ca3af;
+  color: #c3ccda;
   font-size: 12px;
 }
 
@@ -179,7 +190,7 @@ background 0.15s ease,
 }
 
 .empty {
-  color: #9ca3af;
+  color: #c3ccda;
 }
 
 /* Footer */
@@ -192,7 +203,7 @@ background 0.15s ease,
 
   margin-top: 18px;
 
-  color: #6b7280;
+  color: #b1bed0;
   font-size: 12px;
 }
 
@@ -261,7 +272,7 @@ background 0.15s ease,
 
   padding: 8px 10px;
 
-  background: rgba(255, 255, 255, 0.08);
+  background: rgb(255 255 255 / 0.065);
   color: white;
 
   cursor: pointer;
@@ -327,7 +338,7 @@ background 0.15s ease,
 .setting-row p {
   margin: 4px 0 0;
 
-  color: rgba(255, 255, 255, 0.55);
+  color: #c3ccda;
   font-size: 12px;
 }
 
@@ -340,7 +351,7 @@ background 0.15s ease,
 .settings-footer {
   margin-top: 4px;
 
-  color: rgba(255, 255, 255, 0.4);
+  color: #b1bed0;
   font-size: 11px;
   text-align: right;
 }
@@ -451,7 +462,7 @@ background 0.15s ease,
   margin-top: 6px;
   padding: 0 4px;
 
-  color: rgba(255, 255, 255, 0.42);
+  color: #b1bed0;
 
   font-size: 11px;
   font-weight: 600;
@@ -557,7 +568,7 @@ background 0.15s ease,
 }
 
 .formula-card .details-toggle:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgb(255 255 255 / 0.065);
   color: white;
 }
 
@@ -716,3 +727,41 @@ background 0.15s ease,
 .shortcut-help { margin: 8px 4px 0; font-size: 12px; line-height: 1.5; color: #b9c2d0; }
 .shortcut-controls button:disabled { opacity: 0.5; cursor: default; }
 .shortcut-controls button:focus-visible { outline: 2px solid #98b6ff; outline-offset: 2px; }
+
+/* One native glass shell, with quiet translucent content and a brighter control rim. */
+.formula-card:hover { background: rgb(255 255 255 / 0.07); }
+.formula-card.selected:hover { background: rgb(166 205 255 / 0.16); }
+.formula-actions > button:last-child {
+  color: #f6f9ff;
+  background: linear-gradient(160deg, rgb(255 255 255 / 0.17), rgb(255 255 255 / 0.06));
+  border: 1px solid rgb(255 255 255 / 0.24);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.18);
+}
+.formula-actions > button:last-child:hover { background: rgb(255 255 255 / 0.22); }
+.settings-button, .settings-close, .setting-select {
+  border: 1px solid rgb(255 255 255 / 0.19);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.10);
+}
+.setting-select option { background: #263244; color: #f7f9ff; }
+.library-scope { display: flex; align-items: center; gap: 4px; flex-shrink: 0; margin-top: 12px; }
+.library-scope button { cursor: pointer; border: 1px solid transparent; border-radius: 999px; background: transparent; color: #c3ccda; padding: 6px 11px; font-size: 12px; }
+.library-scope button[aria-pressed="true"] { color: #f7f9ff; background: rgb(255 255 255 / 0.10); border-color: rgb(255 255 255 / 0.22); box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.12); }
+.library-scope span { margin-left: auto; color: #c3ccda; font-size: 11px; }
+.library-scope button:focus-visible, .switch:has(input:focus-visible), .formula-provenance a:focus-visible { outline: 2px solid #b8d8ff; outline-offset: 3px; }
+.formula-provenance { margin-top: 16px; padding-top: 12px; border-top: 1px solid rgb(255 255 255 / 0.14); }
+.formula-provenance a { display: inline-block; color: #c4dfff; margin-top: 8px; font-size: 12px; text-underline-offset: 3px; }
+.panel.reduce-transparency { background: #202c3d; }
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+  .panel { background: #202c3d; }
+  .search { backdrop-filter: none; -webkit-backdrop-filter: none; background: #344256; }
+  .formula-card { background: #28364a; border-color: #718199; }
+  .formula-card.selected { background: #344b68; border-color: #c4dfff; }
+  .metadata, .subtitle, .footer, .setting-row p { color: #e0e8f4; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; scroll-behavior: auto !important; }
+}
+@media (max-width: 440px) {
+  .library-scope span { display: none; }
+  .panel { padding: 16px; }
+}

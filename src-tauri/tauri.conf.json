@@ -13,6 +13,7 @@
     "windows": [
       {
         "title": "FormulaSnap",
+        "theme": "Dark",
         "width": 650,
         "height": 520,
         "resizable": true,

@@ -11,6 +11,7 @@ fn set_always_on_top(window: tauri::WebviewWindow, enabled: bool) {
 }
 pub fn run() {
     tauri::Builder::default()
+        .plugin(tauri_plugin_opener::init())
         .plugin(
             tauri_plugin_global_shortcut::Builder::new()
                 .with_handler(move |app, triggered_shortcut, event| {
@@ -41,6 +42,32 @@ pub fn run() {
             shortcuts::set_shortcut
         ])
         .setup(move |app| {
+            // Glass lenses content inside its window. Put an actual behind-window
+            // material beneath it so the desktop is sampled too (not a white void).
+            #[cfg(target_os = "macos")]
+            if let Some(window) = app.get_webview_window("main") {
+                use window_vibrancy::{
+                    apply_liquid_glass, apply_vibrancy, LiquidGlassOptions, NSGlassEffectViewStyle,
+                    NSVisualEffectMaterial, NSVisualEffectState,
+                };
+                match apply_liquid_glass(
+                    &window,
+                    LiquidGlassOptions::new(NSGlassEffectViewStyle::Clear).radius(24.0),
+                ) {
+                    Ok(()) | Err(window_vibrancy::Error::UnsupportedPlatformVersion(_)) => {}
+                    Err(error) => eprintln!("Could not apply Liquid Glass: {error}"),
+                }
+                // Inserts BELOW the glass. On macOS 15 and earlier this is the
+                // only material, providing the native vibrancy fallback.
+                if let Err(error) = apply_vibrancy(
+                    &window,
+                    NSVisualEffectMaterial::HudWindow,
+                    Some(NSVisualEffectState::Active),
+                    Some(24.0),
+                ) {
+                    eprintln!("Could not apply window backdrop: {error}");
+                }
+            }
             app.handle()
                 .plugin(tauri_plugin_updater::Builder::new().build())?;
             app.handle().plugin(tauri_plugin_process::init())?;
