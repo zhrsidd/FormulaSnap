@@ -9,6 +9,9 @@ import {
   useState,
 } from "react";
 
+import { CollectionTabs, type Collection } from "./components/CollectionTabs";
+import { CopyConfirm } from "./components/CopyConfirm";
+import { TopicPicker } from "./components/TopicPicker";
 import { FormulaEquation } from "./components/FormulaEquation";
 import { listen } from "@tauri-apps/api/event";
 import { getCurrentWindow } from "@tauri-apps/api/window";
@@ -72,7 +75,7 @@ function saveIds(key: string, ids: string[]) {
 
 function App() {
   const [showSettings, setShowSettings] = useState(false);
-  const [collection, setCollection] = useState<"all" | "booklet" | "extras">("all");
+  const [collection, setCollection] = useState<Collection>("all");
   const collectionLabel = collection === "booklet" ? "Formula booklet" : "Exam extras";
   const [reduceTransparency, setReduceTransparency] = useState(() =>
     localStorage.getItem("formulasnap-reduce-transparency") === "true"
@@ -240,19 +243,15 @@ function App() {
 
   // Available topics for currently selected subject
   const availableTopics = useMemo(() => {
-    if (selectedSubject === "All") {
-      return [];
-    }
-
     return Array.from(
       new Set(
         formulas
           .filter(
             (formula) =>
-              formula.subject === selectedSubject
+              selectedSubject === "All" || formula.subject === selectedSubject
           )
           .map((formula) => formula.topic)
-          .concat(selectedSubject === "Further Mathematics" ? ["Decision 1"] : [])
+          .concat(selectedSubject === "Further Mathematics" || selectedSubject === "All" ? ["Decision 1"] : [])
       )
     );
   }, [selectedSubject]);
@@ -260,14 +259,6 @@ function App() {
   // If saved topic is invalid for selected subject,
   // reset it automatically
   useEffect(() => {
-    if (selectedSubject === "All") {
-      if (selectedTopic !== "All") {
-        setSelectedTopic("All");
-      }
-
-      return;
-    }
-
     if (
       selectedTopic !== "All" &&
       !availableTopics.includes(selectedTopic)
@@ -371,11 +362,12 @@ function App() {
     } catch (error) {
       console.error("Could not copy formula:", error);
       setCopyError("Could not copy. Please try again.");
-      return;
+      return false;
     }
     setCopyError("");
     setRecentIds((current) => [item.id, ...current.filter((id) => id !== item.id)].slice(0, RECENTS_LIMIT));
     if (hide) await appWindow?.hide();
+    return true;
   }, [appWindow]);
 
   useEffect(() => {
@@ -428,6 +420,7 @@ function App() {
       event: KeyboardEvent
     ) {
       if (!isDesktop && event.target instanceof HTMLElement && !event.target.closest(".browser-app")) return;
+      if (event.target instanceof HTMLElement && event.target.closest("[data-topic-picker]")) return;
       if (event.key === "Escape") {
         event.preventDefault();
 
@@ -623,15 +616,13 @@ function App() {
             />
 
             <div className="library-scope" aria-label="Formula collection">
-              {([['all', 'All formulae'], ['booklet', 'Formula booklet'], ['extras', 'Exam extras']] as const).map(([value, label]) =>
-                <button key={value} aria-pressed={collection === value} onClick={() => {
-                  setCollection(value);
-                  if (value !== "all" && selectedSubject === "Physics") {
-                    setSelectedSubject("All");
-                    setSelectedTopic("All");
-                  }
-                }}>{label}</button>
-              )}
+              <CollectionTabs value={collection} onChange={value => {
+                setCollection(value);
+                if (value !== "all" && selectedSubject === "Physics") {
+                  setSelectedSubject("All");
+                  setSelectedTopic("All");
+                }
+              }} />
               {collection !== "all" && <span>{collection === "booklet" ? "Provided in the IAL maths booklet" : "Beyond the printed formulae"}</span>}
             </div>
 
@@ -639,10 +630,7 @@ function App() {
               <label>Subject<select value={selectedSubject} onChange={event => { setSelectedSubject(event.target.value as SubjectFilter); setSelectedTopic("All"); }}>
                 {["All", "Physics", "Maths", "Further Mathematics"].map(subject => <option key={subject} value={subject}>{subject === "All" ? "All subjects" : subject}</option>)}
               </select></label>
-              <label>Topic<select value={selectedTopic} disabled={selectedSubject === "All"} onChange={event => setSelectedTopic(event.target.value)}>
-                <option value="All">All topics</option>
-                {availableTopics.map(topic => <option key={topic} value={topic}>{topic}</option>)}
-              </select></label>
+              <div className="browser-topic-filter"><span>Topic</span><TopicPicker value={selectedTopic} topics={availableTopics} onChange={setSelectedTopic} /></div>
               <span className="browser-result-count" role="status">{matchingResults.length} formulae{isSearching ? " found" : " to explore"}</span>
             </div>}
 
@@ -722,14 +710,7 @@ function App() {
                       >
                         <span aria-hidden="true">{expandedId === item.id ? "⌃" : "⌄"}</span>
                       </button>
-                      <button
-                        onClick={(event) => {
-                          event.stopPropagation();
-                          void copyFormula(item);
-                        }}
-                      >
-                        Copy
-                      </button>
+                      <CopyConfirm onCopy={() => copyFormula(item)} />
                     </div>
                     <FormulaEquation math={item.latex} />
                     </div>
@@ -894,6 +875,7 @@ function App() {
 
               <select
                 className="setting-select setting-select-wide"
+                aria-label="Subject"
                 value={selectedSubject}
                 onChange={(event) => {
                   const value =
@@ -928,49 +910,10 @@ function App() {
               </select>
             </div>
 
-            {/* Topic */}
-            {selectedSubject !==
-              "All" && (
-              <div className="setting-row">
-                <div>
-                  <strong>
-                    Topic
-                  </strong>
-
-                  <p>
-                    Limit search to one
-                    topic
-                  </p>
-                </div>
-
-                <select
-                  className="setting-select setting-select-topic"
-                  value={
-                    selectedTopic
-                  }
-                  onChange={(event) =>
-                    setSelectedTopic(
-                      event.target.value
-                    )
-                  }
-                >
-                  <option value="All">
-                    All Topics
-                  </option>
-
-                  {availableTopics.map(
-                    (topic) => (
-                      <option
-                        key={topic}
-                        value={topic}
-                      >
-                        {topic}
-                      </option>
-                    )
-                  )}
-                </select>
-              </div>
-            )}
+            <div className="setting-row topic-setting-row">
+              <div><strong>Topic</strong><p>Search or browse your syllabus</p></div>
+              <TopicPicker value={selectedTopic} topics={availableTopics} onChange={setSelectedTopic} />
+            </div>
 
             {/* Window */}
             {isDesktop && <>

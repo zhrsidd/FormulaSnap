@@ -2,7 +2,8 @@
 
 The user selected Frosted shell from the three-design comparison on 27 October
 2026, preferring 9px backdrop blur. The app now uses one frosted shell with the
-approved 42% navy tint, 38% rim highlight, a soft top highlight and quiet
+approved navy tint (now 32% after the −10% adjustment), zero outer rim
+highlight and quiet
 translucent content rows. The previous fixed-radius native Liquid Glass and HUD
 stack has been replaced so its optical treatment does not override the chosen
 blur value. Typography, search, formulae, favorites and shortcut behaviour are
@@ -36,7 +37,7 @@ blur even at the same nominal radius.
 
 ## Verification
 
-- 27 frontend tests pass, including blur default, live CSS application,
+- 33 frontend tests pass, including blur default, live CSS application,
   persistence, reset, invalid preferences and the readability toggle.
 - 7 native shortcut tests pass; native code checks and the local release app
   compiles. Local updater artifact signing requires the CI-only private key;
@@ -55,3 +56,6 @@ blur even at the same nominal radius.
 - [Tauri window-vibrancy](https://github.com/tauri-apps/window-vibrancy)
 - [Anthropic frontend-design skill](https://github.com/anthropics/skills/tree/main/skills/frontend-design)
 - [Watermelon UI review and shortlist](watermelon-ui-review.md)
+
+The [recreated control notes](recreated-components.md) document the Watermelon
+patterns, REA package analysis and current appearance values.

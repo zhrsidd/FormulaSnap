@@ -1,5 +1,5 @@
 // @vitest-environment jsdom
-import { cleanup, fireEvent, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, within } from "@testing-library/react";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import App from "./App";
 
@@ -12,19 +12,27 @@ beforeEach(() => {
 });
 afterEach(cleanup);
 
+function chooseTopic(topic: string) {
+  const input = screen.getByRole("combobox", { name: "Topic" });
+  fireEvent.focus(input);
+  fireEvent.change(input, { target: { value: topic === "All" ? "" : topic } });
+  fireEvent.click(screen.getByRole("option", { name: topic === "All" ? "All topics" : topic }));
+}
+const formulaGroups = () => screen.getAllByRole("group").filter(node => node.classList.contains("formula-card"));
+
 it("browses General without a query and retains search and favorites", () => {
   render(<App />);
   fireEvent.click(screen.getByRole("button", { name: "Open Settings" }));
-  fireEvent.change(screen.getByRole("combobox"), { target: { value: "Physics" } });
-  fireEvent.change(screen.getAllByRole("combobox")[1], { target: { value: "General" } });
+  fireEvent.change(screen.getByRole("combobox", { name: "Subject" }), { target: { value: "Physics" } });
+  chooseTopic("General");
   fireEvent.click(screen.getByRole("button", { name: "Done" }));
-  expect(screen.getAllByRole("group")).toHaveLength(20);
+  expect(formulaGroups()).toHaveLength(20);
   expect(screen.getByRole("heading", { name: "General" })).toBeTruthy();
   expect(screen.getByRole("group", { name: "Work Done" })).toBeTruthy();
   fireEvent.click(screen.getByRole("button", { name: "Add Work Done to favorites" }));
   expect(screen.getByRole("heading", { name: "Favorites" })).toBeTruthy();
   expect(screen.getByRole("heading", { name: "General" })).toBeTruthy();
-  expect(screen.getAllByRole("group")).toHaveLength(20);
+  expect(formulaGroups()).toHaveLength(20);
   fireEvent.change(screen.getByRole("textbox"), { target: { value: "work done" } });
   expect(screen.getByRole("group", { name: "Work Done" })).toBeTruthy();
   expect(screen.queryByRole("button", { name: "Check for updates" })).toBeNull();
@@ -36,24 +44,24 @@ it("migrates saved Further Pure topic names and explains the source's empty Deci
   render(<App />);
   expect(screen.getByRole("group", { name: "Newton–Raphson Iteration" })).toBeTruthy();
   fireEvent.click(screen.getByRole("button", { name: "Open Settings" }));
-  expect((screen.getAllByRole("combobox")[0] as HTMLSelectElement).value).toBe("Further Mathematics");
-  const topics = screen.getAllByRole("combobox")[1];
-  expect(Array.from((topics as HTMLSelectElement).options).map(o => o.value)).toEqual(["All", "Further Pure 1", "Further Pure 2", "Further Pure 3", "Decision 1"]);
-  fireEvent.change(topics, { target: { value: "Decision 1" } });
+  expect((screen.getByRole("combobox", { name: "Subject" }) as HTMLSelectElement).value).toBe("Further Mathematics");
+  fireEvent.focus(screen.getByRole("combobox", { name: "Topic" }));
+  expect(within(screen.getByRole("listbox")).getAllByRole("option").map(o => o.textContent?.replace("✓", ""))).toEqual(["All topics", "Further Pure 1", "Further Pure 2", "Further Pure 3", "Decision 1"]);
+  fireEvent.click(screen.getByRole("option", { name: "Decision 1" }));
   fireEvent.click(screen.getByRole("button", { name: "Done" }));
   expect(screen.getByText(/lists no required formulae/)).toBeTruthy();
 });
 
 it("browses the web library in pages without stealing initial focus", () => {
   render(<App />);
-  expect(screen.getAllByRole("group")).toHaveLength(24);
+  expect(formulaGroups()).toHaveLength(24);
   expect(document.activeElement).not.toBe(screen.getByRole("textbox"));
   expect(HTMLElement.prototype.scrollIntoView).not.toHaveBeenCalled();
   fireEvent.click(screen.getByRole("button", { name: /Show more formulae/ }));
-  expect(screen.getAllByRole("group")).toHaveLength(48);
+  expect(formulaGroups()).toHaveLength(48);
   expect(fireEvent.keyDown(screen.getByRole("textbox"), { key: " ", code: "Space" })).toBe(true);
   fireEvent.change(screen.getByRole("combobox", { name: "Subject" }), { target: { value: "Further Mathematics" } });
-  expect(screen.getAllByRole("group")).toHaveLength(24);
+  expect(formulaGroups()).toHaveLength(24);
   expect(screen.getByRole("combobox", { name: "Topic" })).toBeTruthy();
 });
 
@@ -109,7 +117,7 @@ it.each([["garbage", "9"], ["Infinity", "9"], ["", "9"], ["-4", "0"], ["100", "4
   "handles an invalid saved blur of %s without breaking search", (saved, expected) => {
     localStorage.setItem("formulasnap-background-blur", saved);
     render(<App />);
-    expect(screen.getAllByRole("group").length).toBeGreaterThan(0);
+    expect(formulaGroups().length).toBeGreaterThan(0);
     fireEvent.click(screen.getByRole("button", { name: "Open Settings" }));
     expect((screen.getByRole("slider") as HTMLInputElement).value).toBe(expected);
   }
@@ -138,4 +146,25 @@ it("keeps the selected topic when switching collections and explains the empty M
   expect(screen.getByText(/No dedicated M1 formulae/)).toBeTruthy();
   fireEvent.click(screen.getByRole("button", { name: "Exam extras" }));
   expect(screen.getByRole("group", { name: "Newton's Second Law" })).toBeTruthy();
+});
+
+it("keeps a topic chosen across all subjects, Settings, collections and a reload", () => {
+  const { unmount } = render(<App />);
+  chooseTopic("Mechanics 1");
+  expect(screen.getByRole("group", { name: "Newton's Second Law" })).toBeTruthy();
+  fireEvent.click(screen.getByRole("button", { name: "Open Settings" }));
+  const topic = screen.getByRole("combobox", { name: "Topic" }) as HTMLInputElement;
+  expect(topic.value).toBe("Mechanics 1");
+  fireEvent.focus(topic);
+  fireEvent.keyDown(topic, { key: "Escape" });
+  expect(screen.getByRole("heading", { name: "Settings" })).toBeTruthy();
+  fireEvent.click(screen.getByRole("button", { name: "Done" }));
+  fireEvent.click(screen.getByRole("button", { name: "Formula booklet" }));
+  expect(screen.getByText(/No dedicated M1 formulae/)).toBeTruthy();
+  fireEvent.click(screen.getByRole("button", { name: "Exam extras" }));
+  expect(screen.getByRole("group", { name: "Newton's Second Law" })).toBeTruthy();
+  unmount();
+  render(<App />);
+  expect((screen.getByRole("combobox", { name: "Topic" }) as HTMLInputElement).value).toBe("Mechanics 1");
+  expect((screen.getByRole("combobox", { name: "Subject" }) as HTMLSelectElement).value).toBe("All");
 });

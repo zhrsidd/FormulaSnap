@@ -137,3 +137,18 @@ html.browser-document body {
   .browser-site .formula-card { background: #202f44; border-color: #718199; }
   .browser-site .search { background: #24344b; }
 }
+
+.browser-site .browser-app .panel { background: rgb(12 19 30 / .32); border-color: transparent; box-shadow: none; }
+.browser-topic-filter { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.browser-topic-filter > span { color: #95a6bf; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; }
+.browser-topic-filter .topic-picker { width: 230px; max-width: 100%; }
+.browser-site .copy-confirm { min-width: 78px; }
+@media (max-width: 760px) { .browser-topic-filter { flex: 1; } .browser-topic-filter .topic-picker { width: 100%; } }
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+  .browser-site .browser-app .panel, .panel { background: #202c3d; }
+}
+.browser-site .browser-app .panel.reduce-transparency, .panel.reduce-transparency { background: #202c3d; }
+
+@media (max-width: 440px) {
+  .browser-filters > label, .browser-topic-filter { flex: 1 0 100%; width: 100%; }
+}

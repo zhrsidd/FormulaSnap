@@ -10,7 +10,7 @@
 
 </head>
 <body>
-<header style="max-width:760px;margin:0 auto 18px;font:14px/1.5 -apple-system,BlinkMacSystemFont,sans-serif;color:light-dark(#172236,#edf3ff)"><h1 style="font-size:20px;margin:0 0 6px">FormulaSnap glass comparison</h1><p style="margin:0 0 8px">Frosted shell is selected for FormulaSnap, with 9px blur by default. Open preview Settings to adjust the blur, or Glass controls to compare backgrounds and treatments. This is a browser simulation; native macOS rendering differs.</p><a href="/FormulaSnap/" style="color:inherit;text-underline-offset:3px">Open the formula library</a></header>
+<header style="max-width:760px;margin:0 auto 18px;font:14px/1.5 -apple-system,BlinkMacSystemFont,sans-serif;color:light-dark(#172236,#edf3ff)"><h1 style="font-size:20px;margin:0 0 6px">FormulaSnap glass comparison</h1><p style="margin:0 0 8px">Frosted shell is selected for FormulaSnap, with 9px blur, −10% tint adjustment and zero edge highlight. Open preview Settings to adjust the blur, or Glass controls to compare backgrounds and treatments. This is a browser simulation; native macOS rendering differs.</p><a href="/FormulaSnap/#library" style="color:inherit;text-underline-offset:3px">Try the updated app components</a></header>
 
 <iframe id="codex-visualization" sandbox="allow-scripts" referrerpolicy="no-referrer" title="FormulaSnap · Glass comparison" data-srcdoc="&lt;!doctype html&gt;
 &lt;html lang=&quot;en&quot; data-visualize-standalone&gt;
@@ -1923,7 +1923,7 @@ html&gt;body{padding:0}&lt;/style&gt;
   (() =&gt; {
     const root=document.getElementById(&#x27;fs-glass-comparison&#x27;);
     const template=root.querySelector(&#x27;#fs-glass-window-template&#x27;);
-    const defaults={backdrop:&#x27;Colour field&#x27;,tintAdjustment:0,blur:9,edge:38};
+    const defaults={backdrop:&#x27;Colour field&#x27;,tintAdjustment:-10,blur:9,edge:0,profile:&quot;frosted-v2&quot;};
     const state={...defaults};
     const examples=[
       {name:&quot;Newton’s second law&quot;,topic:&#x27;Maths · Mechanics 1&#x27;,equation:&#x27;ΣF = ma&#x27;,collection:&#x27;extras&#x27;,note:&#x27;Resolve the resultant force along each chosen axis.&#x27;},
@@ -1944,13 +1944,14 @@ html&gt;body{padding:0}&lt;/style&gt;
         entry.window.querySelector(&#x27;.fs-blur-control&#x27;).value=state.blur;
         entry.window.querySelector(&#x27;.fs-blur-value&#x27;).textContent=state.blur+&#x27;px&#x27;;
         entry.window.style.setProperty(&#x27;--fs-edge&#x27;,&#x27;rgba(255,255,255,&#x27;+state.edge/100+&#x27;)&#x27;);
+        entry.window.style.boxShadow=state.edge===0?&#x27;0 24px 65px #07122f55&#x27;:&#x27;&#x27;;
       }
     }
     function restore(saved){
       const value=saved?.modelContent?.glassAppearance;
       if(!value) return;
       if([&#x27;Colour field&#x27;,&#x27;Study notes&#x27;,&#x27;Contrast grid&#x27;].includes(value.backdrop))state.backdrop=value.backdrop;
-      for(const [key,min,max] of [[&#x27;tintAdjustment&#x27;,-10,40],[&#x27;blur&#x27;,0,40],[&#x27;edge&#x27;,0,90]]) if(typeof value[key]===&#x27;number&#x27;)state[key]=Math.max(min,Math.min(max,value[key]));
+      for(const [key,min,max] of [[&#x27;tintAdjustment&#x27;,-10,40],[&#x27;blur&#x27;,0,40],[&#x27;edge&#x27;,0,90]]) if((key===&#x27;blur&#x27;||value.profile===&#x27;frosted-v2&#x27;)&amp;&amp;typeof value[key]===&#x27;number&#x27;)state[key]=Math.max(min,Math.min(max,value[key]));
       appearance();
     }
     for(const stage of root.querySelectorAll(&#x27;.fs-stage&#x27;)){

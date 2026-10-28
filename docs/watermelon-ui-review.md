@@ -1,8 +1,9 @@
 # Watermelon UI candidates for FormulaSnap
 
 Reviewed 27 October 2026 against the compact React/Tauri app and its approved
-Frosted shell. These are recommendations; no Watermelon components have been
-installed in FormulaSnap.
+Frosted shell. The first three patterns were approved and recreated on 28 October 2026.
+See [implementation and REA evidence](recreated-components.md). The remaining
+rows are recommendations.
 
 | Priority | Candidate | Where it fits | Adaptation needed |
 | --- | --- | --- | --- |
