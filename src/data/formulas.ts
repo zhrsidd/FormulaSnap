@@ -17,14 +17,33 @@ export type Formula = {
   aliases: string[];
   variables: FormulaVariable[];
   notes?: string;
-  booklet?: { page: number };
+  booklet?: { page: number; url?: string };
   examKnowledge?: {
     section: string;
     status: "derived-not-printed" | "derived-from-printed-equation";
   };
 };
 
+const PHYSICS_UNIT_1_PAPER = "https://qualifications.pearson.com/content/dam/pdf/International%20Advanced%20Level/Physics/2018/Exam-materials/wph11-01-que-20230111.pdf#page=26";
+
+// Physics booklet pages refer to Appendix 7 of the IAL specification unless a paper is linked.
 export const formulas: Formula[] = ([
+
+  {
+    id: "physics-u1-work-done",
+    name: "Work Done by a Parallel Force",
+    subject: "Physics",
+    topic: "Unit 1: Mechanics and Materials",
+    formula: "ΔW = FΔs",
+    latex: String.raw`\Delta W = F\Delta s`,
+    aliases: ["work done", "energy transferred", "force times distance"],
+    variables: [
+      { symbol: "ΔW", name: "work done", unit: "J" },
+      { symbol: "F", name: "force along the displacement", unit: "N" },
+      { symbol: "Δs", name: "displacement", unit: "m" },
+    ],
+    booklet: { page: 26, url: PHYSICS_UNIT_1_PAPER },
+  },
 
   // PHYSICS — GENERAL: common relationships beyond the formula sheet
 
@@ -71,6 +90,7 @@ export const formulas: Formula[] = ([
     "name": "Average Power",
     "subject": "Physics",
     "topic": "General",
+    "booklet": { "page": 26, "url": PHYSICS_UNIT_1_PAPER },
     "formula": "P = E / t = W / t",
     "latex": "P = \\frac{E}{t} = \\frac{W}{t}",
     "aliases": [
@@ -146,6 +166,7 @@ export const formulas: Formula[] = ([
     "name": "Kinetic Energy",
     "subject": "Physics",
     "topic": "General",
+    "booklet": { "page": 26, "url": PHYSICS_UNIT_1_PAPER },
     "formula": "E_k = 1/2 mv²",
     "latex": "E_k = \\frac{1}{2}mv^2",
     "aliases": [
@@ -178,6 +199,7 @@ export const formulas: Formula[] = ([
     "name": "Change in Gravitational Potential Energy",
     "subject": "Physics",
     "topic": "General",
+    "booklet": { "page": 26, "url": PHYSICS_UNIT_1_PAPER },
     "formula": "ΔE_p = mgΔh",
     "latex": "\\Delta E_p = mg\\,\\Delta h",
     "aliases": [
@@ -216,6 +238,7 @@ export const formulas: Formula[] = ([
     "name": "Energy Efficiency",
     "subject": "Physics",
     "topic": "General",
+    "booklet": { "page": 26, "url": PHYSICS_UNIT_1_PAPER },
     "formula": "η = E_useful / E_input",
     "latex": "\\eta = \\frac{E_{\\text{useful}}}{E_{\\text{input}}}",
     "aliases": [
@@ -248,6 +271,7 @@ export const formulas: Formula[] = ([
     "name": "Power Efficiency",
     "subject": "Physics",
     "topic": "General",
+    "booklet": { "page": 26, "url": PHYSICS_UNIT_1_PAPER },
     "formula": "η = P_useful / P_input",
     "latex": "\\eta = \\frac{P_{\\text{useful}}}{P_{\\text{input}}}",
     "aliases": [
@@ -693,6 +717,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u1-suvat-average-velocity",
+    booklet: { page: 65 },
     name: "SUVAT Average Velocity",
     subject: "Physics",
     topic: "Unit 1: Mechanics and Materials",
@@ -717,6 +742,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u1-suvat-final-velocity",
+    booklet: { page: 65 },
     name: "SUVAT Final Velocity",
     subject: "Physics",
     topic: "Unit 1: Mechanics and Materials",
@@ -740,6 +766,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u1-suvat-displacement",
+    booklet: { page: 65 },
     name: "SUVAT Displacement",
     subject: "Physics",
     topic: "Unit 1: Mechanics and Materials",
@@ -763,6 +790,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u1-suvat-without-time",
+    booklet: { page: 65 },
     name: "SUVAT Without Time",
     subject: "Physics",
     topic: "Unit 1: Mechanics and Materials",
@@ -787,6 +815,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u1-newtons-second-law",
+    booklet: { page: 65 },
     name: "Newton's Second Law",
     subject: "Physics",
     topic: "Unit 1: Mechanics and Materials",
@@ -808,6 +837,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u1-gravitational-field-strength",
+    booklet: { page: 65 },
     name: "Gravitational Field Strength",
     subject: "Physics",
     topic: "Unit 1: Mechanics and Materials",
@@ -828,6 +858,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u1-weight",
+    booklet: { page: 65 },
     name: "Weight",
     subject: "Physics",
     topic: "Unit 1: Mechanics and Materials",
@@ -848,6 +879,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u1-momentum",
+    booklet: { page: 65 },
     name: "Momentum",
     subject: "Physics",
     topic: "Unit 1: Mechanics and Materials",
@@ -868,6 +900,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u1-moment-of-force",
+    booklet: { page: 65 },
     name: "Moment of Force",
     subject: "Physics",
     topic: "Unit 1: Mechanics and Materials",
@@ -890,6 +923,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u1-density",
+    booklet: { page: 65 },
     name: "Density",
     subject: "Physics",
     topic: "Unit 1: Mechanics and Materials",
@@ -910,6 +944,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u1-stokes-law",
+    booklet: { page: 65 },
     name: "Stokes' Law",
     subject: "Physics",
     topic: "Unit 1: Mechanics and Materials",
@@ -934,6 +969,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u1-hookes-law",
+    booklet: { page: 65 },
     name: "Hooke's Law",
     subject: "Physics",
     topic: "Unit 1: Mechanics and Materials",
@@ -957,6 +993,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u1-stress",
+    booklet: { page: 65 },
     name: "Stress",
     subject: "Physics",
     topic: "Unit 1: Mechanics and Materials",
@@ -977,6 +1014,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u1-strain",
+    booklet: { page: 65 },
     name: "Strain",
     subject: "Physics",
     topic: "Unit 1: Mechanics and Materials",
@@ -998,6 +1036,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u1-young-modulus",
+    booklet: { page: 66 },
     name: "Young Modulus",
     subject: "Physics",
     topic: "Unit 1: Mechanics and Materials",
@@ -1019,6 +1058,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u1-elastic-strain-energy",
+    booklet: { page: 66 },
     name: "Elastic Strain Energy",
     subject: "Physics",
     topic: "Unit 1: Mechanics and Materials",
@@ -1046,6 +1086,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u2-wave-speed",
+    booklet: { page: 66 },
     name: "Wave Speed",
     subject: "Physics",
     topic: "Unit 2: Waves and Electricity",
@@ -1066,6 +1107,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u2-wave-speed-string",
+    booklet: { page: 66 },
     name: "Wave Speed on a String",
     subject: "Physics",
     topic: "Unit 2: Waves and Electricity",
@@ -1088,6 +1130,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u2-radiation-intensity",
+    booklet: { page: 66 },
     name: "Intensity of Radiation",
     subject: "Physics",
     topic: "Unit 2: Waves and Electricity",
@@ -1108,6 +1151,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u2-snells-law",
+    booklet: { page: 66 },
     name: "Snell's Law",
     subject: "Physics",
     topic: "Unit 2: Waves and Electricity",
@@ -1131,6 +1175,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u2-refractive-index-speed",
+    booklet: { page: 66 },
     name: "Refractive Index from Wave Speed",
     subject: "Physics",
     topic: "Unit 2: Waves and Electricity",
@@ -1151,6 +1196,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u2-critical-angle",
+    booklet: { page: 66 },
     name: "Critical Angle",
     subject: "Physics",
     topic: "Unit 2: Waves and Electricity",
@@ -1172,6 +1218,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u2-diffraction-grating",
+    booklet: { page: 66 },
     name: "Diffraction Grating",
     subject: "Physics",
     topic: "Unit 2: Waves and Electricity",
@@ -1194,6 +1241,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u2-de-broglie",
+    booklet: { page: 66 },
     name: "de Broglie Wavelength",
     subject: "Physics",
     topic: "Unit 2: Waves and Electricity",
@@ -1215,6 +1263,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u2-photon-energy",
+    booklet: { page: 66 },
     name: "Photon Energy",
     subject: "Physics",
     topic: "Unit 2: Waves and Electricity",
@@ -1236,6 +1285,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u2-photoelectric-equation",
+    booklet: { page: 66 },
     name: "Einstein's Photoelectric Equation",
     subject: "Physics",
     topic: "Unit 2: Waves and Electricity",
@@ -1259,6 +1309,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u2-electric-current",
+    booklet: { page: 67 },
     name: "Electric Current",
     subject: "Physics",
     topic: "Unit 2: Waves and Electricity",
@@ -1281,6 +1332,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u2-potential-difference",
+    booklet: { page: 67 },
     name: "Potential Difference",
     subject: "Physics",
     topic: "Unit 2: Waves and Electricity",
@@ -1302,6 +1354,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u2-resistance",
+    booklet: { page: 67 },
     name: "Resistance",
     subject: "Physics",
     topic: "Unit 2: Waves and Electricity",
@@ -1324,6 +1377,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u2-electrical-power-vi",
+    booklet: { page: 67 },
     name: "Electrical Power",
     subject: "Physics",
     topic: "Unit 2: Waves and Electricity",
@@ -1345,6 +1399,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u2-electrical-power-i2r",
+    booklet: { page: 67 },
     name: "Electrical Power from Current and Resistance",
     subject: "Physics",
     topic: "Unit 2: Waves and Electricity",
@@ -1366,6 +1421,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u2-electrical-power-v2r",
+    booklet: { page: 67 },
     name: "Electrical Power from Voltage and Resistance",
     subject: "Physics",
     topic: "Unit 2: Waves and Electricity",
@@ -1387,6 +1443,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u2-electrical-energy",
+    booklet: { page: 67 },
     name: "Electrical Energy",
     subject: "Physics",
     topic: "Unit 2: Waves and Electricity",
@@ -1408,6 +1465,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u2-resistivity",
+    booklet: { page: 67 },
     name: "Resistivity",
     subject: "Physics",
     topic: "Unit 2: Waves and Electricity",
@@ -1429,6 +1487,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u2-current-charge-carriers",
+    booklet: { page: 67 },
     name: "Current from Charge Carriers",
     subject: "Physics",
     topic: "Unit 2: Waves and Electricity",
@@ -1456,6 +1515,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u4-impulse",
+    booklet: { page: 67 },
     name: "Impulse",
     subject: "Physics",
     topic: "Unit 4: Further Mechanics, Fields and Particles",
@@ -1476,6 +1536,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u4-kinetic-energy-momentum",
+    booklet: { page: 67 },
     name: "Kinetic Energy from Momentum",
     subject: "Physics",
     topic: "Unit 4: Further Mechanics, Fields and Particles",
@@ -1497,6 +1558,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u4-circular-linear-speed",
+    booklet: { page: 67 },
     name: "Circular Motion Linear Speed",
     subject: "Physics",
     topic: "Unit 4: Further Mechanics, Fields and Particles",
@@ -1517,6 +1579,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u4-circular-period",
+    booklet: { page: 67 },
     name: "Circular Motion Period",
     subject: "Physics",
     topic: "Unit 4: Further Mechanics, Fields and Particles",
@@ -1536,6 +1599,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u4-centripetal-acceleration-speed",
+    booklet: { page: 67 },
     name: "Centripetal Acceleration",
     subject: "Physics",
     topic: "Unit 4: Further Mechanics, Fields and Particles",
@@ -1556,6 +1620,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u4-centripetal-acceleration-angular",
+    booklet: { page: 67 },
     name: "Centripetal Acceleration from Angular Speed",
     subject: "Physics",
     topic: "Unit 4: Further Mechanics, Fields and Particles",
@@ -1576,6 +1641,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u4-centripetal-force-speed",
+    booklet: { page: 68 },
     name: "Centripetal Force",
     subject: "Physics",
     topic: "Unit 4: Further Mechanics, Fields and Particles",
@@ -1598,6 +1664,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u4-centripetal-force-angular",
+    booklet: { page: 68 },
     name: "Centripetal Force from Angular Speed",
     subject: "Physics",
     topic: "Unit 4: Further Mechanics, Fields and Particles",
@@ -1619,6 +1686,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u4-electric-field-strength",
+    booklet: { page: 68 },
     name: "Electric Field Strength",
     subject: "Physics",
     topic: "Unit 4: Further Mechanics, Fields and Particles",
@@ -1639,6 +1707,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u4-coulombs-law",
+    booklet: { page: 68 },
     name: "Coulomb's Law",
     subject: "Physics",
     topic: "Unit 4: Further Mechanics, Fields and Particles",
@@ -1661,6 +1730,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u4-point-charge-electric-field",
+    booklet: { page: 68 },
     name: "Electric Field of a Point Charge",
     subject: "Physics",
     topic: "Unit 4: Further Mechanics, Fields and Particles",
@@ -1682,6 +1752,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u4-uniform-electric-field",
+    booklet: { page: 68 },
     name: "Uniform Electric Field",
     subject: "Physics",
     topic: "Unit 4: Further Mechanics, Fields and Particles",
@@ -1702,6 +1773,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u4-electric-potential",
+    booklet: { page: 68 },
     name: "Electric Potential of a Point Charge",
     subject: "Physics",
     topic: "Unit 4: Further Mechanics, Fields and Particles",
@@ -1723,6 +1795,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u4-capacitance",
+    booklet: { page: 68 },
     name: "Capacitance",
     subject: "Physics",
     topic: "Unit 4: Further Mechanics, Fields and Particles",
@@ -1743,6 +1816,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u4-capacitor-energy",
+    booklet: { page: 68 },
     name: "Energy Stored in a Capacitor",
     subject: "Physics",
     topic: "Unit 4: Further Mechanics, Fields and Particles",
@@ -1764,6 +1838,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u4-capacitor-discharge-charge",
+    booklet: { page: 68 },
     name: "Capacitor Discharge — Charge",
     subject: "Physics",
     topic: "Unit 4: Further Mechanics, Fields and Particles",
@@ -1788,6 +1863,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u4-capacitor-discharge-current",
+    booklet: { page: 68 },
     name: "Capacitor Discharge — Current",
     subject: "Physics",
     topic: "Unit 4: Further Mechanics, Fields and Particles",
@@ -1811,6 +1887,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u4-capacitor-discharge-voltage",
+    booklet: { page: 68 },
     name: "Capacitor Discharge — Voltage",
     subject: "Physics",
     topic: "Unit 4: Further Mechanics, Fields and Particles",
@@ -1834,6 +1911,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u4-capacitor-log-charge",
+    booklet: { page: 68 },
     name: "Capacitor Discharge — Log Charge",
     subject: "Physics",
     topic: "Unit 4: Further Mechanics, Fields and Particles",
@@ -1857,6 +1935,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u4-capacitor-log-current",
+    booklet: { page: 69 },
     name: "Capacitor Discharge — Log Current",
     subject: "Physics",
     topic: "Unit 4: Further Mechanics, Fields and Particles",
@@ -1880,6 +1959,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u4-capacitor-log-voltage",
+    booklet: { page: 69 },
     name: "Capacitor Discharge — Log Voltage",
     subject: "Physics",
     topic: "Unit 4: Further Mechanics, Fields and Particles",
@@ -1903,6 +1983,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u4-magnetic-force-charge",
+    booklet: { page: 69 },
     name: "Magnetic Force on a Moving Charge",
     subject: "Physics",
     topic: "Unit 4: Further Mechanics, Fields and Particles",
@@ -1925,6 +2006,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u4-magnetic-force-wire",
+    booklet: { page: 69 },
     name: "Magnetic Force on a Current-Carrying Wire",
     subject: "Physics",
     topic: "Unit 4: Further Mechanics, Fields and Particles",
@@ -1948,6 +2030,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u4-faraday-lenz",
+    booklet: { page: 69 },
     name: "Faraday's and Lenz's Laws",
     subject: "Physics",
     topic: "Unit 4: Further Mechanics, Fields and Particles",
@@ -1970,6 +2053,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u4-charged-particle-radius",
+    booklet: { page: 69 },
     name: "Charged Particle Radius in a Magnetic Field",
     subject: "Physics",
     topic: "Unit 4: Further Mechanics, Fields and Particles",
@@ -1993,6 +2077,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u4-mass-energy",
+    booklet: { page: 69 },
     name: "Mass-Energy Equivalence",
     subject: "Physics",
     topic: "Unit 4: Further Mechanics, Fields and Particles",
@@ -2018,6 +2103,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u5-specific-heat-capacity",
+    booklet: { page: 69 },
     name: "Heating — Specific Heat Capacity",
     subject: "Physics",
     topic: "Unit 5: Thermodynamics, Radiation, Oscillations and Cosmology",
@@ -2039,6 +2125,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u5-latent-heat",
+    booklet: { page: 69 },
     name: "Heating — Specific Latent Heat",
     subject: "Physics",
     topic: "Unit 5: Thermodynamics, Radiation, Oscillations and Cosmology",
@@ -2060,6 +2147,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u5-ideal-gas",
+    booklet: { page: 69 },
     name: "Ideal Gas Equation",
     subject: "Physics",
     topic: "Unit 5: Thermodynamics, Radiation, Oscillations and Cosmology",
@@ -2084,6 +2172,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u5-molecular-kinetic-energy",
+    booklet: { page: 69 },
     name: "Mean Molecular Kinetic Energy",
     subject: "Physics",
     topic: "Unit 5: Thermodynamics, Radiation, Oscillations and Cosmology",
@@ -2106,6 +2195,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u5-mass-energy",
+    booklet: { page: 69 },
     name: "Nuclear Mass-Energy Equivalence",
     subject: "Physics",
     topic: "Unit 5: Thermodynamics, Radiation, Oscillations and Cosmology",
@@ -2126,6 +2216,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u5-radioactive-activity",
+    booklet: { page: 69 },
     name: "Radioactive Activity",
     subject: "Physics",
     topic: "Unit 5: Thermodynamics, Radiation, Oscillations and Cosmology",
@@ -2147,6 +2238,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u5-radioactive-decay-rate",
+    booklet: { page: 69 },
     name: "Radioactive Decay Rate",
     subject: "Physics",
     topic: "Unit 5: Thermodynamics, Radiation, Oscillations and Cosmology",
@@ -2167,6 +2259,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u5-half-life",
+    booklet: { page: 70 },
     name: "Decay Constant and Half-Life",
     subject: "Physics",
     topic: "Unit 5: Thermodynamics, Radiation, Oscillations and Cosmology",
@@ -2187,6 +2280,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u5-radioactive-number-decay",
+    booklet: { page: 70 },
     name: "Radioactive Number Decay",
     subject: "Physics",
     topic: "Unit 5: Thermodynamics, Radiation, Oscillations and Cosmology",
@@ -2208,6 +2302,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u5-radioactive-activity-decay",
+    booklet: { page: 70 },
     name: "Radioactive Activity Decay",
     subject: "Physics",
     topic: "Unit 5: Thermodynamics, Radiation, Oscillations and Cosmology",
@@ -2229,6 +2324,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u5-shm-force",
+    booklet: { page: 70 },
     name: "Simple Harmonic Motion — Force",
     subject: "Physics",
     topic: "Unit 5: Thermodynamics, Radiation, Oscillations and Cosmology",
@@ -2250,6 +2346,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u5-shm-acceleration",
+    booklet: { page: 70 },
     name: "Simple Harmonic Motion — Acceleration",
     subject: "Physics",
     topic: "Unit 5: Thermodynamics, Radiation, Oscillations and Cosmology",
@@ -2270,6 +2367,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u5-shm-displacement",
+    booklet: { page: 70 },
     name: "Simple Harmonic Motion — Displacement",
     subject: "Physics",
     topic: "Unit 5: Thermodynamics, Radiation, Oscillations and Cosmology",
@@ -2292,6 +2390,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u5-shm-velocity",
+    booklet: { page: 70 },
     name: "Simple Harmonic Motion — Velocity",
     subject: "Physics",
     topic: "Unit 5: Thermodynamics, Radiation, Oscillations and Cosmology",
@@ -2313,6 +2412,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u5-shm-acceleration-time",
+    booklet: { page: 70 },
     name: "Simple Harmonic Motion — Acceleration with Time",
     subject: "Physics",
     topic: "Unit 5: Thermodynamics, Radiation, Oscillations and Cosmology",
@@ -2334,6 +2434,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u5-shm-period",
+    booklet: { page: 70 },
     name: "SHM Period and Frequency",
     subject: "Physics",
     topic: "Unit 5: Thermodynamics, Radiation, Oscillations and Cosmology",
@@ -2354,6 +2455,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u5-angular-frequency",
+    booklet: { page: 70 },
     name: "Angular Frequency",
     subject: "Physics",
     topic: "Unit 5: Thermodynamics, Radiation, Oscillations and Cosmology",
@@ -2374,6 +2476,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u5-mass-spring-period",
+    booklet: { page: 70 },
     name: "Mass-Spring Oscillator Period",
     subject: "Physics",
     topic: "Unit 5: Thermodynamics, Radiation, Oscillations and Cosmology",
@@ -2394,6 +2497,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u5-pendulum-period",
+    booklet: { page: 70 },
     name: "Simple Pendulum Period",
     subject: "Physics",
     topic: "Unit 5: Thermodynamics, Radiation, Oscillations and Cosmology",
@@ -2415,6 +2519,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u5-gravitational-field-definition",
+    booklet: { page: 70 },
     name: "Gravitational Field Strength Definition",
     subject: "Physics",
     topic: "Unit 5: Thermodynamics, Radiation, Oscillations and Cosmology",
@@ -2435,6 +2540,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u5-newtons-gravitation",
+    booklet: { page: 70 },
     name: "Newton's Law of Gravitation",
     subject: "Physics",
     topic: "Unit 5: Thermodynamics, Radiation, Oscillations and Cosmology",
@@ -2457,6 +2563,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u5-gravitational-field-point-mass",
+    booklet: { page: 70 },
     name: "Gravitational Field of a Point Mass",
     subject: "Physics",
     topic: "Unit 5: Thermodynamics, Radiation, Oscillations and Cosmology",
@@ -2478,6 +2585,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u5-gravitational-potential",
+    booklet: { page: 70 },
     name: "Gravitational Potential",
     subject: "Physics",
     topic: "Unit 5: Thermodynamics, Radiation, Oscillations and Cosmology",
@@ -2499,6 +2607,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u5-stefan-boltzmann",
+    booklet: { page: 71 },
     name: "Stefan-Boltzmann Law",
     subject: "Physics",
     topic: "Unit 5: Thermodynamics, Radiation, Oscillations and Cosmology",
@@ -2521,6 +2630,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u5-wiens-law",
+    booklet: { page: 71 },
     name: "Wien's Law",
     subject: "Physics",
     topic: "Unit 5: Thermodynamics, Radiation, Oscillations and Cosmology",
@@ -2541,6 +2651,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u5-radiation-intensity",
+    booklet: { page: 71 },
     name: "Radiation Intensity from Luminosity",
     subject: "Physics",
     topic: "Unit 5: Thermodynamics, Radiation, Oscillations and Cosmology",
@@ -2562,6 +2673,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u5-redshift",
+    booklet: { page: 71 },
     name: "Cosmological Redshift",
     subject: "Physics",
     topic: "Unit 5: Thermodynamics, Radiation, Oscillations and Cosmology",
@@ -2588,6 +2700,7 @@ export const formulas: Formula[] = ([
 
   {
     id: "physics-u5-hubbles-law",
+    booklet: { page: 71 },
     name: "Hubble's Law",
     subject: "Physics",
     topic: "Unit 5: Thermodynamics, Radiation, Oscillations and Cosmology",

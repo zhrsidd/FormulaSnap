@@ -25,7 +25,7 @@ import "./App.css";
 import { ShortcutSettings } from "./components/ShortcutSettings";
 import { AppUpdates } from "./components/AppUpdates";
 
-import { formulas } from "./data/formulas";
+import { formulas, type Formula } from "./data/formulas";
 import { PEARSON_FORMULA_BOOK } from "./data/pearsonFormulas";
 
 type SubjectFilter =
@@ -71,6 +71,16 @@ function saveIds(key: string, ids: string[]) {
   } catch (error) {
     console.error("Could not save FormulaSnap history:", error);
   }
+}
+
+const PHYSICS_SPECIFICATION = "https://qualifications.pearson.com/content/dam/pdf/International%20Advanced%20Level/Physics/2018/Specification%20and%20Sample%20Assessment/9781446957783_IAL_Physics_Iss3.pdf";
+
+function bookletUrl(formula: Formula) {
+  const booklet = formula.booklet!;
+  if (booklet.url) return booklet.url;
+  return formula.subject === "Physics"
+    ? `${PHYSICS_SPECIFICATION}#page=${booklet.page + 4}`
+    : `${PEARSON_FORMULA_BOOK}#page=${booklet.page + 6}`;
 }
 
 function App() {
@@ -623,7 +633,7 @@ function App() {
                   setSelectedTopic("All");
                 }
               }} />
-              {collection !== "all" && <span>{collection === "booklet" ? "Provided in the IAL maths booklet" : "Beyond the printed formulae"}</span>}
+              {collection !== "all" && <span>{collection === "booklet" ? "Provided in the IAL formula sheets" : "Beyond the printed formulae"}</span>}
             </div>
 
             {!isDesktop && <div className="browser-filters">
@@ -739,12 +749,16 @@ function App() {
                       )}
                       {item.booklet && <div className="formula-provenance">
                         <h3>Formula booklet · page {item.booklet.page}</h3>
-                        <p>Printed in Pearson’s IAL Mathematics Formula Book (Issue 2, 2021).</p>
-                        <a href={`${PEARSON_FORMULA_BOOK}#page=${item.booklet.page + 6}`} target="_blank" rel="noreferrer" onClick={event => {
+                        <p>{item.subject === "Physics"
+                          ? item.booklet.url
+                            ? "Supplied in Pearson’s IAL Physics Unit 1 exam paper."
+                            : "Listed in Appendix 7 of Pearson’s IAL Physics specification."
+                          : "Printed in Pearson’s IAL Mathematics Formula Book (Issue 2, 2021)."}</p>
+                        <a href={bookletUrl(item)} target="_blank" rel="noreferrer" onClick={event => {
                           event.stopPropagation();
                           if (isDesktop) {
                             event.preventDefault();
-                            void openUrl(`${PEARSON_FORMULA_BOOK}#page=${item.booklet!.page + 6}`).catch(error => {
+                            void openUrl(bookletUrl(item)).catch(error => {
                               console.error("Could not open formula booklet:", error);
                               setCopyError("Could not open the source. Please try again.");
                             });

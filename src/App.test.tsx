@@ -127,7 +127,11 @@ it.each([["garbage", "9"], ["Infinity", "9"], ["", "9"], ["-4", "0"], ["100", "4
 it("limits Formula booklet to supplied equations, opens its printed page, and excludes exam extras", () => {
   render(<App />);
   fireEvent.click(screen.getByRole("button", { name: "Formula booklet" }));
-  expect(screen.getByRole("status").textContent).toContain("154 formulae");
+  expect(screen.getByRole("status").textContent).toContain("249 formulae");
+  fireEvent.change(screen.getByRole("textbox"), { target: { value: "Stokes" } });
+  fireEvent.click(screen.getByRole("button", { name: "Expand Stokes' Law" }));
+  expect(screen.getByRole("link", { name: "Open the official formula booklet" }).getAttribute("href")).toContain("IAL_Physics_Iss3.pdf#page=69");
+  fireEvent.click(screen.getByRole("button", { name: "Collapse Stokes' Law" }));
   fireEvent.change(screen.getByRole("textbox"), { target: { value: "Newton–Raphson" } });
   expect(screen.getByRole("group", { name: "Newton–Raphson Iteration" })).toBeTruthy();
   fireEvent.click(screen.getByRole("button", { name: "Expand Newton–Raphson Iteration" }));
