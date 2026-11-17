@@ -3830,6 +3830,30 @@ export const formulas: Formula[] = ([
   },
 
   {
+    id: "maths-s1-data-variance",
+    name: "Variance of a Data Set",
+    subject: "Maths",
+    topic: "Statistics 1",
+    formula: "Variance = Σx²/n − x̄² or Σfx²/Σf − x̄²",
+    latex: "\\begin{aligned}\\text{Variance}&=\\frac{\\sum x^2}{n}-\\bar{x}^{,2}\\\\[4pt]&=\\frac{\\sum fx^2}{\\sum f}-\\bar{x}^{,2}\\quad\\text{(frequency data)}\\end{aligned}",
+    aliases: [
+      "variance",
+      "population variance",
+      "data variance",
+      "frequency variance",
+      "mean of squares minus square of mean",
+      "sum of squares",
+    ],
+    variables: [
+      { symbol: "x", name: "data value, or class midpoint for grouped data" },
+      { symbol: "x̄", name: "mean of the data" },
+      { symbol: "n", name: "number of observations" },
+      { symbol: "f", name: "frequency of each value or class" },
+    ],
+    notes: "Subtract the square of the mean from the mean of the squared values. Use class midpoints to estimate variance for grouped data. This gives the descriptive variance with divisor n. The unbiased sample variance uses n − 1 in the squared-deviations formula.",
+  },
+
+  {
     id: "maths-s1-standard-deviation",
     name: "Standard Deviation from Variance",
     subject: "Maths",
